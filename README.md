@@ -86,6 +86,48 @@ rails routes
 rails logs
 ```
 
+## Linting and Pre-commit Hooks
+
+- **Ruby:** RuboCop (`bundle exec rubocop`)
+- **JavaScript:** ESLint (`npx eslint app/javascript`)
+- **Views:** ERB Lint (`bundle exec erblint app/views`)
+- **EditorConfig:** Enforced via pre-commit
+- **Test Coverage:** Pre-commit checks for 100% coverage in Ruby (RSpec) and JS (Jest, if present)
+
+### Setup
+
+1. Install pre-commit:
+   ```sh
+   pip install pre-commit
+   ```
+2. Install the hooks:
+   ```sh
+   pre-commit install
+   ```
+3. For JS linting, install dependencies:
+   ```sh
+   npm install eslint --save-dev
+   ```
+4. For ERB linting, add to Gemfile:
+   ```ruby
+   gem 'erb_lint', require: false
+   ```
+   Then run:
+   ```sh
+   bundle install
+   ```
+
+### Testing Pre-commit
+
+To verify that pre-commit is working, make a small change to any file (for example, add a space or comment), then run:
+
+```sh
+pre-commit run --all-files
+```
+
+This will execute all configured hooks on your codebase.  
+If you try to commit with `git commit`, the hooks should also run automatically and block the commit if any checks fail.
+
 ## Contributing
 
 - Fork the repo and create your branch from `main`.
