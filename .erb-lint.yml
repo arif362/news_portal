@@ -1,0 +1,9 @@
+erb_lint:
+  linters:
+    FinalNewline:
+      enabled: true
+    Indentation:
+      enabled: true
+      indent_size: 2
+    TrailingWhitespace:
+      enabled: true
