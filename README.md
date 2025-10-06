@@ -36,6 +36,18 @@ rails db:migrate
 rails db:seed
 ```
 
+> **Note:**  
+> If you see an error like  
+> `/home/runner/work/news_portal/news_portal/db/schema.rb doesn't exist yet. Run 'bin/rails db:migrate' to create it, then try again.`  
+> you need to run:
+> 
+> ```sh
+> bin/rails db:migrate
+> ```
+> 
+> This will generate `db/schema.rb`.  
+> If you do not intend to use a database, you can edit `config/application.rb` to limit the frameworks that are loaded.
+
 ### Running the App
 
 ```sh
@@ -48,6 +60,21 @@ rails server
 bundle exec rspec    # RSpec (main test framework)
 rails test           # If using Minitest
 ```
+
+> **To run all RSpec tests:**
+> ```sh
+> bundle exec rspec
+> ```
+>
+> **To run a specific test file:**
+> ```sh
+> bundle exec rspec spec/path/to/your_spec.rb
+> ```
+>
+> **To run a specific test by line number:**
+> ```sh
+> bundle exec rspec spec/path/to/your_spec.rb:42
+> ```
 
 ## Best Practices
 
