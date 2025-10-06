@@ -1,0 +1,50 @@
+repos:
+  # Ruby linting
+  - repo: https://github.com/rubocop/rubocop
+    rev: v1.60.2
+    hooks:
+      - id: rubocop
+
+  # EditorConfig
+  - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
+    rev: v2.7.0
+    hooks:
+      - id: editorconfig-checker
+
+  # JavaScript linting with ESLint (using local hook for better control)
+  - repo: local
+    hooks:
+      - id: eslint
+        name: "ESLint"
+        entry: npx eslint
+        language: node
+        types: [javascript, typescript]
+        files: \.(js|jsx|ts|tsx)$
+
+  # ERB linting
+  - repo: https://github.com/Shopify/erb-lint
+    rev: v0.13.0
+    hooks:
+      - id: erb-lint
+
+  # Check test coverage (Ruby)
+  - repo: local
+    hooks:
+      - id: rspec-coverage
+        name: "Check RSpec Coverage"
+        entry: bash -c 'bundle exec rspec && ruby -e "exit(1) unless (JSON.parse(File.read(\"coverage/.last_run.json\"))[\"result\"][\"covered_percent\"] == 100.0)"'
+        language: system
+        pass_filenames: false
+        always_run: true
+        files: '^app/|^spec/'
+
+  # Check test coverage (JS, if using Jest)
+  - repo: local
+    hooks:
+      - id: jest-coverage
+        name: "Check Jest Coverage"
+        entry: bash -c 'npx jest --coverage --coverageThreshold="{\"global\":{\"branches\":100,\"functions\":100,\"lines\":100,\"statements\":100}}"'
+        language: system
+        pass_filenames: false
+        always_run: true
+        files: '^app/javascript/|^spec/javascript/'
