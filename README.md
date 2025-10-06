@@ -98,6 +98,26 @@ rails test           # If using Minitest
 - Keep the main branch deployable at all times.
 - Run tests locally before pushing.
 
+## Branching Strategy
+
+We follow a standard branching strategy to ensure a clean and maintainable Git history:
+
+- **main**: Always deployable. Only production-ready code is merged here.
+- **development** (optional): Integration branch for features before merging to `main`.
+- **feature/***: For new features. Branch off from `main` or `development` (if used).  
+  Example: `feature/user-auth`
+- **bugfix/***: For bug fixes. Branch off from `main` or `development`.  
+  Example: `bugfix/fix-login`
+- **hotfix/***: For urgent fixes to production. Branch off from `main`, merge back to both `main` and `development`.
+- **release/*** (optional): For preparing a release. Branch off from `development`, merge back to both `main` and `development`.
+
+**Workflow:**
+1. Create a branch from `main`.
+2. Work on your changes.
+3. Open a pull request to merge into `development`.
+4. Ensure all checks pass and get a review before merging.
+5. After Successful QA from the development env, you have to pull request to merge into `main` from your feature branch with only your changes.
+
 ## Deployment
 
 - Ensure all environment variables are set on the server.
