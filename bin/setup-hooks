@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+set -e
+
+HOOKS_DIR=".git/hooks"
+
+echo "Installing git hooks..."
+
+# Pre-commit hook: fast checks only (RuboCop)
+cat > "$HOOKS_DIR/pre-commit" << 'HOOK'
+#!/usr/bin/env bash
+set -e
+
+echo "Running pre-commit checks..."
+
+echo "--- RuboCop (code style) ---"
+bundle exec rubocop --force-exclusion
+
+echo ""
+echo "Pre-commit checks passed!"
+HOOK
+chmod +x "$HOOKS_DIR/pre-commit"
+
+# Pre-push hook: full CI suite
+cat > "$HOOKS_DIR/pre-push" << 'HOOK'
+#!/usr/bin/env bash
+set -e
+
+echo "Running pre-push checks (bin/ci)..."
+echo "This may take a moment..."
+echo ""
+
+bin/ci
+
+echo ""
+echo "All pre-push checks passed. Pushing..."
+HOOK
+chmod +x "$HOOKS_DIR/pre-push"
+
+echo ""
+echo "Git hooks installed:"
+echo "  pre-commit  -> RuboCop (fast, runs on every commit)"
+echo "  pre-push    -> bin/ci  (full suite, runs before push)"
+echo ""
+echo "To skip hooks in an emergency: git commit --no-verify / git push --no-verify"

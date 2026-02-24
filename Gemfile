@@ -26,6 +26,15 @@ gem "rack-attack"
 # Gem vulnerability scanner [https://github.com/rubysec/bundler-audit]
 gem "bundler-audit", require: false
 
+# Structured JSON logging for production [https://github.com/roidrage/lograge]
+gem "lograge"
+
+# CORS support for API requests [https://github.com/cyu/rack-cors]
+gem "rack-cors"
+
+# Pagination [https://github.com/ddnexus/pagy]
+gem "pagy"
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
@@ -60,6 +69,7 @@ group :development, :test do
   gem "rspec-rails"
   gem "factory_bot_rails"
   gem "faker"
+  gem "simplecov", require: false
 end
 
 group :development do

@@ -16,12 +16,22 @@ module NewsPortal
     # Common ones are `templates`, `generators`, or `middleware`, for example.
     config.autoload_lib(ignore: %w[assets tasks])
 
-    # Configuration for the application, engines, and railties goes here.
-    #
-    # These settings can be overridden in specific environments using the files
-    # in config/environments, which are processed later.
-    #
-    # config.time_zone = "Central Time (US & Canada)"
-    # config.eager_load_paths << Rails.root.join("extras")
+    # Use UTC for all timestamps (enterprise standard)
+    config.time_zone = "UTC"
+
+    # Default locale and available locales
+    config.i18n.default_locale = :en
+    config.i18n.available_locales = %i[en]
+
+    # Generator defaults for consistent scaffolding
+    config.generators do |g|
+      g.orm :active_record, primary_key_type: :uuid
+      g.test_framework :rspec,
+        fixtures: false,
+        view_specs: false,
+        helper_specs: false,
+        routing_specs: false
+      g.factory_bot suffix: "factory"
+    end
   end
 end
