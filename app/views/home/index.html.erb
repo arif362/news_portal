@@ -1,25 +1,26 @@
 <% content_for(:title, t('home.title')) %>
 
-<%# Breaking News Banner %>
+<%# Breaking News Ticker %>
 <% if @breaking_news.any? %>
-  <div class="bg-red-600">
+  <div class="bg-red-600" data-controller="news-ticker" data-news-ticker-speed-value="60"
+       data-action="mouseenter->news-ticker#pause mouseleave->news-ticker#resume">
     <div class="mx-auto max-w-7xl px-4 py-2.5 sm:px-6 lg:px-8">
       <div class="flex items-center gap-3">
-        <span class="inline-flex shrink-0 items-center gap-1.5 rounded bg-white px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-red-600">
+        <span class="inline-flex shrink-0 items-center gap-1.5 rounded bg-white px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-red-600 z-10">
           <span class="relative flex h-2 w-2">
             <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75"></span>
             <span class="relative inline-flex h-2 w-2 rounded-full bg-red-600"></span>
           </span>
           <%= t('home.breaking') %>
         </span>
-        <div class="flex min-w-0 items-center gap-4 overflow-x-auto">
-          <% @breaking_news.each do |article| %>
-            <%= link_to article.title, article_path(article),
-                  class: "whitespace-nowrap text-sm font-medium text-white hover:text-red-100 transition" %>
-            <% unless article == @breaking_news.last %>
+        <div class="overflow-hidden min-w-0 flex-1">
+          <div class="flex items-center gap-6 whitespace-nowrap will-change-transform" data-news-ticker-target="track">
+            <% @breaking_news.each do |article| %>
+              <%= link_to article.title, article_path(article),
+                    class: "inline-block whitespace-nowrap text-sm font-medium text-white hover:text-red-100 transition" %>
               <span class="text-red-300">&bull;</span>
             <% end %>
-          <% end %>
+          </div>
         </div>
       </div>
     </div>
