@@ -212,6 +212,74 @@ pages_data.each do |pd|
 end
 puts "  Created #{Page.count} pages"
 
+# 10. Create sample advertisements
+ad_placements = {
+  top_banner: {
+    title_en: "Premium News Subscription",
+    title_bn: "প্রিমিয়াম নিউজ সাবস্ক্রিপশন",
+    description_en: "Get unlimited access to all articles. Subscribe today!",
+    description_bn: "সব নিবন্ধে সীমাহীন অ্যাক্সেস পান। আজই সাবস্ক্রাইব করুন!",
+    target_url: "https://example.com/subscribe"
+  },
+  sidebar: {
+    title_en: "Tech Conference 2026",
+    title_bn: "টেক কনফারেন্স ২০২৬",
+    description_en: "Join the biggest tech event of the year. Register now!",
+    description_bn: "বছরের সবচেয়ে বড় টেক ইভেন্টে যোগ দিন।",
+    target_url: "https://example.com/techconf"
+  },
+  in_feed: {
+    title_en: "Learn to Code in 30 Days",
+    title_bn: "৩০ দিনে কোডিং শিখুন",
+    description_en: "Start your journey to becoming a developer. Free trial available.",
+    description_bn: "ডেভেলপার হওয়ার যাত্রা শুরু করুন। বিনামূল্যে ট্রায়াল পাওয়া যায়।",
+    target_url: "https://example.com/learn-code"
+  },
+  popup: {
+    title_en: "Breaking News Alerts",
+    title_bn: "ব্রেকিং নিউজ অ্যালার্ট",
+    description_en: "Never miss important news. Enable push notifications!",
+    description_bn: "গুরুত্বপূর্ণ খবর মিস করবেন না। পুশ নোটিফিকেশন চালু করুন!",
+    target_url: "https://example.com/alerts"
+  }
+}
+
+ad_placements.each_with_index do |(placement, data), idx|
+  Advertisement.find_or_create_by!(
+    title: { "en" => data[:title_en] }
+  ) do |a|
+    a.title_en = data[:title_en]
+    a.title_bn = data[:title_bn]
+    a.description_en = data[:description_en]
+    a.description_bn = data[:description_bn]
+    a.ad_type = :image
+    a.placement = placement
+    a.position = idx
+    a.target_url = data[:target_url]
+    a.status = :active
+    a.starts_at = 7.days.ago
+    a.ends_at = 60.days.from_now
+    a.impressions_count = rand(500..5000)
+    a.clicks_count = rand(10..200)
+  end
+end
+
+# Add one HTML embed ad as example
+Advertisement.find_or_create_by!(title: { "en" => "Google Ads Partner" }) do |a|
+  a.title_en = "Google Ads Partner"
+  a.title_bn = "গুগল অ্যাডস পার্টনার"
+  a.ad_type = :html
+  a.placement = :sidebar
+  a.position = 1
+  a.embed_code = "<div style='padding:20px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;text-align:center;'><p style='color:#6b7280;font-size:14px;'>Ad placeholder — replace with your ad network code</p></div>"
+  a.status = :active
+  a.starts_at = 3.days.ago
+  a.ends_at = 90.days.from_now
+  a.impressions_count = rand(100..1000)
+  a.clicks_count = rand(5..50)
+end
+puts "  Created #{Advertisement.count} advertisements"
+
 puts ""
 puts "Seeding complete!"
 puts "Login: admin@newsportal.com / password123"

@@ -77,6 +77,11 @@
   </div>
 </article>
 
+<%# Sidebar Ad (between article and related) %>
+<div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 mt-10">
+  <%= render_ad(:sidebar) %>
+</div>
+
 <%# Related Articles %>
 <% if @related_articles.any? %>
   <section class="mt-12 border-t border-gray-200 bg-gray-50 py-12">

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_24_105930) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_24_115111) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -52,6 +52,33 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_24_105930) do
     t.uuid "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "advertisements", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "ad_type", default: 0, null: false
+    t.string "alt_text"
+    t.bigint "clicks_count", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.jsonb "description", default: {}
+    t.text "embed_code"
+    t.datetime "ends_at"
+    t.bigint "impressions_count", default: 0, null: false
+    t.boolean "open_in_new_tab", default: true
+    t.integer "placement", default: 0, null: false
+    t.integer "position", default: 0
+    t.boolean "responsive", default: true
+    t.string "slug", null: false
+    t.datetime "starts_at"
+    t.integer "status", default: 0, null: false
+    t.string "target_url"
+    t.jsonb "title", default: {}, null: false
+    t.datetime "updated_at", null: false
+    t.index ["ends_at"], name: "index_advertisements_on_ends_at"
+    t.index ["placement"], name: "index_advertisements_on_placement"
+    t.index ["slug"], name: "index_advertisements_on_slug", unique: true
+    t.index ["starts_at"], name: "index_advertisements_on_starts_at"
+    t.index ["status", "placement"], name: "index_advertisements_on_status_and_placement"
+    t.index ["status"], name: "index_advertisements_on_status"
   end
 
   create_table "article_tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

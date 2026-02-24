@@ -1,0 +1,200 @@
+en:
+  app_name: "News Portal"
+  app_description: "Your trusted source for breaking news, in-depth analysis, and comprehensive coverage."
+
+  errors:
+    not_found: "Resource not found"
+    unauthorized: "You are not authorized to perform this action"
+    unprocessable_entity: "Unable to process your request"
+    bad_request: "Bad request"
+    internal_server_error: "Something went wrong"
+    rate_limited: "Rate limit exceeded. Please try again later."
+
+  nav:
+    search_placeholder: "Search articles..."
+    admin: "Admin"
+    admin_dashboard: "Admin Dashboard"
+    sign_out: "Sign Out"
+    sign_in: "Sign In"
+    register: "Register"
+    create_account: "Create Account"
+    open_main_menu: "Open main menu"
+
+  footer:
+    description: "Your trusted source for breaking news, in-depth analysis, and comprehensive coverage of the stories that matter most."
+    quick_links: "Quick Links"
+    home: "Home"
+    all_articles: "All Articles"
+    categories: "Categories"
+    pages: "Pages"
+    connect: "Connect"
+    twitter: "Twitter"
+    github: "GitHub"
+    linkedin: "LinkedIn"
+    youtube: "YouTube"
+    copyright_html: "&copy; %{year} News Portal. All rights reserved."
+
+  home:
+    title: "Home - Latest News & Breaking Stories"
+    breaking: "Breaking"
+    latest_news: "Latest News"
+    latest_subtitle: "Stay up to date with the most recent stories"
+    view_all: "View All"
+    no_articles: "No articles yet"
+    no_articles_hint: "Check back soon for the latest news."
+    view_all_articles: "View All Articles"
+    browse_by_category: "Browse by Category"
+    most_popular: "Most Popular"
+    popular_tags: "Popular Tags"
+
+  articles:
+    title: "All Articles"
+    breadcrumb: "Articles"
+    subtitle: "Browse our complete collection of news and stories."
+    no_articles: "No articles found"
+    no_articles_hint: "Check back soon for new content."
+    published: "Published"
+    tags: "Tags"
+    related_articles: "Related Articles"
+    comments: "Comments"
+    leave_comment: "Leave a comment"
+    comments_disabled: "Comments are disabled for this article."
+    sign_in_to_comment_html: "%{link} to join the conversation."
+    no_comments: "No comments yet. Be the first to share your thoughts!"
+
+  comments:
+    errors_title: "Please fix the following errors:"
+    placeholder: "Write your comment..."
+    moderation_notice: "Comments are moderated and will appear after approval."
+    submit: "Post Comment"
+    reply: "Reply"
+    delete_confirm: "Are you sure you want to delete this comment?"
+    delete: "Delete"
+
+  categories:
+    title: "Categories"
+    subtitle: "Explore articles organized by topic."
+    articles_count:
+      one: "%{count} article"
+      other: "%{count} articles"
+    subcategories_count:
+      one: "%{count} subcategory"
+      other: "%{count} subcategories"
+    subcategories: "Subcategories"
+    no_categories: "No categories yet"
+    no_categories_hint: "Categories will appear here once created."
+    no_articles: "No articles in this category"
+    no_articles_hint: "Check back soon for new content in %{category}."
+
+  search:
+    title: "Search"
+    subtitle: "Find articles, news, and stories across our portal."
+    placeholder: "Type your search query..."
+    button: "Search"
+    showing_results: "Showing results for"
+    no_results: "No results found"
+    no_results_message: "We couldn't find any articles matching \"%{query}\"."
+    no_results_hint: "Try different keywords or check the spelling."
+    browse_all: "Browse All Articles"
+    start_searching: "Start searching"
+    start_hint: "Enter a search term above to find articles."
+
+  tags:
+    breadcrumb: "Tags"
+    articles_count:
+      one: "%{count} article"
+      other: "%{count} articles"
+    no_articles: "No articles with this tag"
+    no_articles_hint: "There are no published articles tagged with #%{tag} yet."
+
+  shared:
+    ago: "ago"
+    min_read: "min read"
+    views:
+      one: "%{count} view"
+      other: "%{count} views"
+    home: "Home"
+    dismiss: "Dismiss"
+    error_count:
+      one: "%{count} error"
+      other: "%{count} errors"
+    prevented_save: "prevented your account from being created:"
+
+  pagination:
+    label: "Pagination"
+    page: "Page"
+    of: "of"
+    previous: "Previous"
+    next: "Next"
+
+  auth:
+    sign_in:
+      title: "Sign In"
+      welcome: "Welcome back to News Portal"
+      email: "Email address"
+      email_placeholder: "you@example.com"
+      password: "Password"
+      password_placeholder: "Enter your password"
+      forgot_password: "Forgot password?"
+      submit: "Sign In"
+      no_account: "Don't have an account?"
+      create_one: "Create one"
+
+    register:
+      title: "Create Account"
+      subtitle: "Join News Portal today"
+      first_name: "First name"
+      first_name_placeholder: "John"
+      last_name: "Last name"
+      last_name_placeholder: "Doe"
+      username: "Username"
+      username_placeholder: "johndoe"
+      username_hint: "Letters, numbers, and underscores only. 3-30 characters."
+      email: "Email address"
+      email_placeholder: "you@example.com"
+      password: "Password"
+      password_hint: "Min. 8 characters"
+      password_confirmation: "Confirm password"
+      password_confirmation_placeholder: "Re-enter your password"
+      submit: "Create Account"
+      have_account: "Already have an account?"
+      sign_in_link: "Sign in"
+
+    password_reset:
+      title: "Reset Password"
+      subtitle: "Enter your email and we'll send you reset instructions."
+      email: "Email address"
+      email_placeholder: "you@example.com"
+      submit: "Send Reset Instructions"
+      remember_password: "Remember your password?"
+      back_to_sign_in: "Back to sign in"
+
+    password_edit:
+      title: "Set New Password"
+      subtitle: "Choose a strong password for your account."
+      errors_title: "Please fix the following errors:"
+      new_password: "New password"
+      password_hint: "Min. 8 characters"
+      confirm_password: "Confirm new password"
+      confirm_placeholder: "Re-enter your new password"
+      submit: "Update Password"
+      back_to_sign_in: "Back to sign in"
+
+  mailer:
+    greeting: "Hello"
+    signature: "The News Portal Team"
+    password_reset:
+      app_name: "NewsPortal"
+      subject: "Reset Your Password"
+      greeting: "Hi"
+      body: "We received a request to reset the password for your News Portal account. Click the button below to set a new password:"
+      button: "Reset My Password"
+      expiry: "This link will expire in 2 hours. If you didn't request a password reset, you can safely ignore this email."
+      fallback: "If the button doesn't work, copy and paste this link into your browser:"
+      copyright_html: "&copy; %{year} News Portal. All rights reserved."
+      text_subject: "News Portal - Reset Your Password"
+      text_body: "We received a request to reset the password for your News Portal account."
+      text_instructions: "To reset your password, visit the following link:"
+      text_expiry: "This link will expire in 2 hours."
+      text_ignore: "If you didn't request a password reset, you can safely ignore this email. Your password will remain unchanged."
+      text_copyright: "News Portal. All rights reserved."

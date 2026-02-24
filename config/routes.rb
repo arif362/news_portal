@@ -31,7 +31,17 @@ Rails.application.routes.draw do
         patch :toggle_active
       end
     end
+
+    resources :advertisements do
+      member do
+        patch :activate
+        patch :pause
+      end
+    end
   end
+
+  # Ad click tracking (lightweight, outside locale scope)
+  get "ads/:id/click", to: "ad_clicks#show", as: :ad_click
 
   # Locale-scoped public routes (English default, Bangla at /bn/...)
   scope "(:locale)", locale: /bn/ do

@@ -3,6 +3,14 @@
     {
       "fingerprint": "51c9b64194e51225ecafdc0a8e79c4c30cf000b20c5c8ddc612a0b269167a110",
       "note": "Intentional: Admin-only controller (require_admin!) permits :role for user management"
+    },
+    {
+      "fingerprint": "10a581a698d9ca67cd961b3885b9daf27c99fcea53d54d6945007842a8ca11cf",
+      "note": "Intentional: Ad click tracking redirects to external advertiser URLs by design"
+    },
+    {
+      "fingerprint": "13823493919a33882a89a9bea33f9b75c300a7a4fea81f2d36e3639768841959",
+      "note": "Intentional: Admin-only view displays advertiser target URL; access restricted to authenticated admins"
     }
   ],
   "updated": "2026-02-24",
