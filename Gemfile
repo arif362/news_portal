@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 8.0.3"
+gem "rails", "~> 8.1.2"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
 # Use postgresql as the database for Active Record
@@ -18,7 +18,22 @@ gem "stimulus-rails"
 gem "jbuilder"
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
-# gem "bcrypt", "~> 3.1.7"
+gem "bcrypt", "~> 3.1.7"
+
+# Rate limiting and throttling [https://github.com/rack/rack-attack]
+gem "rack-attack"
+
+# Gem vulnerability scanner [https://github.com/rubysec/bundler-audit]
+gem "bundler-audit", require: false
+
+# Structured JSON logging for production [https://github.com/roidrage/lograge]
+gem "lograge"
+
+# CORS support for API requests [https://github.com/cyu/rack-cors]
+gem "rack-cors"
+
+# Pagination [https://github.com/ddnexus/pagy]
+gem "pagy"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
@@ -54,6 +69,7 @@ group :development, :test do
   gem "rspec-rails"
   gem "factory_bot_rails"
   gem "faker"
+  gem "simplecov", require: false
 end
 
 group :development do

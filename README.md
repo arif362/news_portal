@@ -2,183 +2,214 @@
 
 A Ruby on Rails application.
 
+## Tech Stack
+
+- **Ruby** 3.4.7
+- **Rails** 8.1.2
+- **Database** PostgreSQL
+- **Frontend** Hotwire (Turbo + Stimulus), Import Maps
+- **Assets** Propshaft
+- **Web Server** Puma
+- **Background Jobs** Solid Queue
+- **Caching** Solid Cache
+- **WebSockets** Solid Cable
+- **Deployment** Kamal + Docker
+
 ## Getting Started
 
 ### Prerequisites
 
-- Ruby (see `.ruby-version` for the required version)
-- Rails (see `Gemfile`)
-- PostgreSQL
-- Node.js & Yarn (if using JS dependencies)
+- Ruby 3.4.7 (see `.ruby-version`)
+- Rails 8.1.2 (see `Gemfile`)
+- PostgreSQL 9.3+
+- RVM (or rbenv/asdf for Ruby version management)
 
 ### Setup
 
 ```sh
 git clone <repo-url>
 cd news_portal
-cp .env.example .env # Set up your environment variables
+cp .env.example .env   # Copy and fill in your environment variables
 bundle install
-yarn install         # If using Yarn
-bin/setup            # Runs setup tasks (db:create, db:migrate, etc.)
-rails generate rspec:install # Set up RSpec (run once)
+bin/setup-hooks        # Install git hooks (required for all developers)
+bin/setup              # Runs db:create, db:migrate, and starts the server
 ```
 
 ### Environment Variables
 
-- All sensitive configuration (database, credentials) should be set in `.env` (never commit this file).
-- See `.env.example` for required variables.
+All sensitive configuration is managed via `.env` (never commit this file).
+See `.env.example` for required variables:
+
+| Variable | Description |
+|----------|-------------|
+| `NEWS_PORTAL_DEVELOPMENT_DB` | Development database name |
+| `NEWS_PORTAL_DEVELOPMENT_USER` | Development database username |
+| `NEWS_PORTAL_DEVELOPMENT_PASSWORD` | Development database password |
+| `NEWS_PORTAL_DEVELOPMENT_HOST` | Development database host |
+| `NEWS_PORTAL_DEVELOPMENT_PORT` | Development database port |
+| `NEWS_PORTAL_TEST_DB` | Test database name |
+| `NEWS_PORTAL_TEST_USER` | Test database username |
+| `NEWS_PORTAL_TEST_PASSWORD` | Test database password |
+| `NEWS_PORTAL_TEST_HOST` | Test database host |
+| `NEWS_PORTAL_TEST_PORT` | Test database port |
+| `MAILER_FROM` | Default sender email address |
+| `APP_HOST` | Production hostname (for DNS rebinding protection) |
 
 ### Database
 
 ```sh
-rails db:create
-rails db:migrate
-rails db:seed
+bin/rails db:create
+bin/rails db:migrate
+bin/rails db:seed
 ```
-
-> **Note:**  
-> If you see an error like  
-> `/home/runner/work/news_portal/news_portal/db/schema.rb doesn't exist yet. Run 'bin/rails db:migrate' to create it, then try again.`  
-> you need to run:
-> 
-> ```sh
-> bin/rails db:migrate
-> ```
-> 
-> This will generate `db/schema.rb`.  
-> If you do not intend to use a database, you can edit `config/application.rb` to limit the frameworks that are loaded.
 
 ### Running the App
 
 ```sh
-rails server
+bin/rails server
 ```
+
+The app will be available at `http://localhost:3000`. Health check endpoint: `GET /up`
+
+## Running Checks Before Pushing
+
+Run all checks with a single command to ensure no bad code is pushed:
+
+```sh
+bin/ci
+```
+
+### Individual Checks
+
+| Check | Command | Purpose |
+|-------|---------|---------|
+| RuboCop | `bundle exec rubocop` | Code style & linting |
+| Brakeman | `bin/brakeman --no-pager` | Security vulnerability scan |
+| Bundle Audit | `bundle exec bundle-audit check --update` | Gem vulnerability scan |
+| Importmap Audit | `bin/importmap audit` | JS dependency vulnerability scan |
+| Minitest | `bin/rails test` | Unit & system tests |
+| RSpec | `bundle exec rspec` | BDD tests |
 
 ### Running Tests
 
 ```sh
-bundle exec rspec    # RSpec (main test framework)
-rails test           # If using Minitest
+# Run all RSpec tests
+bundle exec rspec
+
+# Run a specific test file
+bundle exec rspec spec/path/to/your_spec.rb
+
+# Run a specific test by line number
+bundle exec rspec spec/path/to/your_spec.rb:42
+
+# Run Minitest
+bin/rails test
+
+# Run system tests
+bin/rails test:system
 ```
 
-> **To run all RSpec tests:**
-> ```sh
-> bundle exec rspec
-> ```
->
-> **To run a specific test file:**
-> ```sh
-> bundle exec rspec spec/path/to/your_spec.rb
-> ```
->
-> **To run a specific test by line number:**
-> ```sh
-> bundle exec rspec spec/path/to/your_spec.rb:42
-> ```
+## Security
 
-## Best Practices
+This project includes the following security measures:
 
-- Use environment variables for all secrets and credentials.
-- Never commit `.env` or credentials to version control.
-- Use feature branches and submit pull requests for all changes.
-- Write tests for new features and bug fixes.
-- Follow the style guide enforced by RuboCop (`bundle exec rubocop`).
-- Use `brakeman` for security checks (`bundle exec brakeman`).
-- Keep dependencies up to date (`bundle update`).
-- Document any new environment variables or setup steps in this README.
-- Use RSpec for all new tests.
-- Use FactoryBot for test data and Faker for generating fake data.
-- Clean up test data using DatabaseCleaner.
+- **Content Security Policy (CSP)** - Strict policy with nonce-based script/style protection
+- **Rate Limiting** - Rack::Attack for request throttling (login, password reset, general requests)
+- **Password Hashing** - bcrypt via `has_secure_password`
+- **Parameter Filtering** - Sensitive params (passwords, tokens, API keys, JWTs) filtered from logs
+- **DNS Rebinding Protection** - Production hosts restricted via `APP_HOST` env var
+- **Bundle Audit** - Automated gem vulnerability scanning in CI
+- **Brakeman** - Static analysis for Rails security vulnerabilities
+- **Force SSL** - All production traffic forced over HTTPS
 
-## Team Workflow
+## CI/CD
 
-- Use descriptive branch names (e.g., `feature/user-auth`, `bugfix/fix-login`).
-- Review pull requests before merging.
-- Communicate blockers or issues in the team channel.
-- Keep the main branch deployable at all times.
-- Run tests locally before pushing.
+GitHub Actions runs the following jobs on every PR and push to `main`:
 
-## Branching Strategy
+| Job | Description |
+|-----|-------------|
+| `scan_ruby` | Brakeman security scan |
+| `scan_gems` | Bundle Audit gem vulnerability scan |
+| `scan_js` | Importmap JS dependency audit |
+| `lint` | RuboCop code style check |
+| `test` | Full test suite with PostgreSQL |
 
-We follow a standard branching strategy to ensure a clean and maintainable Git history:
+## Git Hooks (Enforced)
 
-- **main**: Always deployable. Only production-ready code is merged here.
-- **development** (optional): Integration branch for features before merging to `main`.
-- **feature/***: For new features. Branch off from `main` or `development` (if used).  
-  Example: `feature/user-auth`
-- **bugfix/***: For bug fixes. Branch off from `main` or `development`.  
-  Example: `bugfix/fix-login`
-- **hotfix/***: For urgent fixes to production. Branch off from `main`, merge back to both `main` and `development`.
-- **release/*** (optional): For preparing a release. Branch off from `development`, merge back to both `main` and `development`.
-
-**Workflow:**
-1. Create a branch from `main`.
-2. Work on your changes.
-3. Open a pull request to merge into `development`.
-4. Ensure all checks pass and get a review before merging.
-5. After Successful QA from the development env, you have to pull request to merge into `main` from your feature branch with only your changes.
-
-## Deployment
-
-- Ensure all environment variables are set on the server.
-- Run migrations after deploying new code.
-- Use `kamal` or your preferred deployment tool.
-
-## Useful Commands
+Every developer must install git hooks after cloning:
 
 ```sh
-rails console
-rails dbconsole
-rails routes
-rails logs
+bin/setup-hooks
 ```
 
-## Linting and Pre-commit Hooks
+This installs two hooks that **block bad code from being committed or pushed**:
+
+| Hook | When | What it runs |
+|------|------|--------------|
+| `pre-commit` | Every `git commit` | RuboCop (fast code style check) |
+| `pre-push` | Every `git push` | `bin/ci` (full suite: lint, security, tests) |
+
+> To bypass in an emergency: `git push --no-verify` (use sparingly)
+
+## Linting
 
 - **Ruby:** RuboCop (`bundle exec rubocop`)
 - **JavaScript:** ESLint (`npx eslint app/javascript`)
 - **Views:** ERB Lint (`bundle exec erblint app/views`)
-- **EditorConfig:** Enforced via pre-commit
-- **Test Coverage:** Pre-commit checks for 100% coverage in Ruby (RSpec) and JS (Jest, if present)
 
-### Setup
+## Best Practices
 
-1. Install pre-commit:
-   ```sh
-   pip install pre-commit
-   ```
-2. Install the hooks:
-   ```sh
-   pre-commit install
-   ```
-3. For JS linting, install dependencies:
-   ```sh
-   npm install eslint --save-dev
-   ```
-4. For ERB linting, add to Gemfile:
-   ```ruby
-   gem 'erb_lint', require: false
-   ```
-   Then run:
-   ```sh
-   bundle install
-   ```
+- Use environment variables for all secrets and credentials
+- Never commit `.env` or credentials to version control
+- Use feature branches and submit pull requests for all changes
+- Write tests for new features and bug fixes
+- Follow the style guide enforced by RuboCop
+- Run all checks locally before pushing
+- Keep dependencies up to date (`bundle update`)
+- Use RSpec for all new tests
+- Use FactoryBot for test data and Faker for generating fake data
+- Clean up test data using DatabaseCleaner
 
-### Testing Pre-commit
+## Branching Strategy
 
-To verify that pre-commit is working, make a small change to any file (for example, add a space or comment), then run:
+- **main**: Always deployable. Only production-ready code is merged here.
+- **development** (optional): Integration branch for features before merging to `main`.
+- **feature/***: For new features (e.g., `feature/user-auth`)
+- **bugfix/***: For bug fixes (e.g., `bugfix/fix-login`)
+- **hotfix/***: For urgent production fixes. Branch off from `main`.
+- **release/***: For preparing a release.
+
+### Workflow
+
+1. Create a branch from `main`.
+2. Work on your changes.
+3. Run all checks: `bin/ci`
+4. Open a pull request to merge into `development`.
+5. Ensure all CI checks pass and get a review before merging.
+6. After successful QA from the development env, pull request to merge into `main` from your feature branch.
+
+## Deployment
 
 ```sh
-pre-commit run --all-files
+kamal setup   # First-time deployment
+kamal deploy  # Subsequent deployments
 ```
 
-This will execute all configured hooks on your codebase.  
-If you try to commit with `git commit`, the hooks should also run automatically and block the commit if any checks fail.
+Ensure all production environment variables are set (see `.env.example`).
+
+## Useful Commands
+
+```sh
+bin/rails console       # Interactive Rails console
+bin/rails dbconsole     # Database console
+bin/rails routes        # List all routes
+bin/rails server        # Start development server
+```
 
 ## Contributing
 
 - Fork the repo and create your branch from `main`.
-- Ensure code passes all tests and lints.
+- Ensure code passes all checks (lint, security, tests).
 - Submit a pull request with a clear description.
 
 ## License

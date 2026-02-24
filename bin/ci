@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+set -e
+
+echo "=============================================="
+echo " Running all CI checks"
+echo "=============================================="
+
+echo ""
+echo "--- RuboCop (code style) ---"
+bundle exec rubocop
+
+echo ""
+echo "--- Brakeman (security scan) ---"
+bin/brakeman --no-pager -q
+
+echo ""
+echo "--- Bundle Audit (gem vulnerabilities) ---"
+bundle exec bundle-audit check --update
+
+echo ""
+echo "--- Importmap Audit (JS vulnerabilities) ---"
+bin/importmap audit
+
+echo ""
+echo "--- Minitest ---"
+bin/rails test
+
+echo ""
+echo "--- RSpec ---"
+bundle exec rspec
+
+echo ""
+echo "=============================================="
+echo " All checks passed!"
+echo "=============================================="
