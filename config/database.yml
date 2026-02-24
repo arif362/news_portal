@@ -39,10 +39,10 @@ test:
 production:
   primary: &primary_production
     <<: *default
-    database: <%= ENV.fetch("NEWS_PORTAL_PRODUCTION_DB") { "news_portal_production" } %>
+    database: <%= ENV["NEWS_PORTAL_PRODUCTION_DB"] || (raise "NEWS_PORTAL_PRODUCTION_DB is required" if ENV["RAILS_ENV"] == "production") %>
     username: <%= ENV["NEWS_PORTAL_PRODUCTION_USER"] %>
     password: <%= ENV["NEWS_PORTAL_PRODUCTION_PASSWORD"] %>
-    host: <%= ENV.fetch("NEWS_PORTAL_PRODUCTION_HOST", "localhost") %>
+    host: <%= ENV["NEWS_PORTAL_PRODUCTION_HOST"] || (raise "NEWS_PORTAL_PRODUCTION_HOST is required" if ENV["RAILS_ENV"] == "production") %>
     port: <%= ENV.fetch("NEWS_PORTAL_PRODUCTION_PORT", 5432) %>
   cache:
     <<: *primary_production

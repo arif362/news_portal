@@ -40,6 +40,9 @@ node_modules/
 # Test coverage reports
 coverage/
 
+# RSpec persistence file
+spec/examples.txt
+
 # Byebug debugger history
 .byebug_history
 
