@@ -1,0 +1,46 @@
+<% flash.each do |type, message| %>
+  <% next if message.blank? %>
+  <%
+    color_classes = case type.to_s
+                    when "notice", "success"
+                      "border-green-400 bg-green-50 text-green-800"
+                    when "alert", "error"
+                      "border-red-400 bg-red-50 text-red-800"
+                    else
+                      "border-blue-400 bg-blue-50 text-blue-800"
+                    end
+    icon_color = case type.to_s
+                 when "notice", "success" then "text-green-500"
+                 when "alert", "error" then "text-red-500"
+                 else "text-blue-500"
+                 end
+  %>
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"
+       data-controller="flash"
+       data-flash-delay-value="5000">
+    <div class="mt-4 flex items-center justify-between rounded-lg border-l-4 p-4 shadow-sm <%= color_classes %>"
+         role="alert"
+         data-flash-target="message">
+      <div class="flex items-center gap-3">
+        <% if type.to_s.in?(%w[notice success]) %>
+          <svg class="h-5 w-5 shrink-0 <%= icon_color %>" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+          </svg>
+        <% else %>
+          <svg class="h-5 w-5 shrink-0 <%= icon_color %>" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+          </svg>
+        <% end %>
+        <p class="text-sm font-medium"><%= message %></p>
+      </div>
+      <button type="button"
+              class="ml-4 inline-flex shrink-0 rounded-md p-1.5 transition hover:bg-black/5 focus:outline-none focus:ring-2 focus:ring-offset-2"
+              data-action="click->flash#dismiss">
+        <span class="sr-only">Dismiss</span>
+        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+        </svg>
+      </button>
+    </div>
+  </div>
+<% end %>

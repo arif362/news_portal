@@ -1,0 +1,113 @@
+<% content_for(:title, "Comments") %>
+
+<%# Header %>
+<div class="flex items-center justify-between mb-6">
+  <h1 class="text-2xl font-bold text-gray-900">Comments</h1>
+</div>
+
+<%# Status Filter Tabs %>
+<div class="mb-6 border-b border-gray-200">
+  <nav class="flex space-x-8" aria-label="Comment status filters">
+    <%= link_to "All", admin_comments_path,
+        class: "pb-3 px-1 text-sm font-medium border-b-2 transition-colors #{params[:status].blank? ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}" %>
+    <%= link_to admin_comments_path(status: :pending),
+        class: "pb-3 px-1 text-sm font-medium border-b-2 transition-colors #{params[:status] == 'pending' ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}" do %>
+      Pending
+      <% pending_count = Comment.pending_review.count %>
+      <% if pending_count > 0 %>
+        <span class="ml-1 inline-flex items-center justify-center rounded-full bg-orange-100 px-2 py-0.5 text-xs font-medium text-orange-800"><%= pending_count %></span>
+      <% end %>
+    <% end %>
+    <%= link_to "Approved", admin_comments_path(status: :approved),
+        class: "pb-3 px-1 text-sm font-medium border-b-2 transition-colors #{params[:status] == 'approved' ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}" %>
+    <%= link_to "Rejected", admin_comments_path(status: :rejected),
+        class: "pb-3 px-1 text-sm font-medium border-b-2 transition-colors #{params[:status] == 'rejected' ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}" %>
+  </nav>
+</div>
+
+<%# Comments Table %>
+<div class="bg-white rounded-lg shadow-sm overflow-hidden">
+  <div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Commenter</th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Article</th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Comment</th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+          <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        <% @comments.each do |comment| %>
+          <tr class="hover:bg-gray-50">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm font-medium text-gray-900"><%= comment.user.full_name %></div>
+              <div class="text-xs text-gray-500"><%= comment.user.email %></div>
+            </td>
+            <td class="px-6 py-4">
+              <%= link_to truncate(comment.article.title, length: 35), admin_article_path(comment.article), class: "text-sm text-primary-600 hover:text-primary-700" %>
+            </td>
+            <td class="px-6 py-4">
+              <%= link_to admin_comment_path(comment), class: "text-sm text-gray-700 hover:text-gray-900" do %>
+                <%= truncate(comment.body, length: 80) %>
+              <% end %>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <% case comment.status %>
+              <% when "pending" %>
+                <span class="inline-flex items-center rounded-full bg-orange-100 px-2.5 py-0.5 text-xs font-medium text-orange-800">Pending</span>
+              <% when "approved" %>
+                <span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">Approved</span>
+              <% when "rejected" %>
+                <span class="inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800">Rejected</span>
+              <% end %>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              <%= comment.created_at.strftime("%b %d, %Y") %>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+              <div class="flex items-center justify-end space-x-2">
+                <% unless comment.approved? %>
+                  <%= button_to approve_admin_comment_path(comment), method: :patch, class: "inline-flex items-center rounded-md bg-green-600 px-2.5 py-1.5 text-xs font-medium text-white hover:bg-green-700 transition-colors" do %>
+                    Approve
+                  <% end %>
+                <% end %>
+
+                <% unless comment.rejected? %>
+                  <%= button_to reject_admin_comment_path(comment), method: :patch, class: "inline-flex items-center rounded-md bg-orange-600 px-2.5 py-1.5 text-xs font-medium text-white hover:bg-orange-700 transition-colors" do %>
+                    Reject
+                  <% end %>
+                <% end %>
+
+                <%= button_to admin_comment_path(comment), method: :delete, data: { turbo_confirm: "Are you sure you want to delete this comment?" }, class: "inline-flex items-center rounded-md bg-red-600 px-2.5 py-1.5 text-xs font-medium text-white hover:bg-red-700 transition-colors" do %>
+                  Delete
+                <% end %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+
+        <% if @comments.empty? %>
+          <tr>
+            <td colspan="6" class="px-6 py-12 text-center text-sm text-gray-500">
+              <svg class="mx-auto h-12 w-12 text-gray-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
+              </svg>
+              <p class="font-medium">No comments found</p>
+              <p class="mt-1 text-gray-400">Comments will appear here when readers interact with articles.</p>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <%# Pagination %>
+  <% if @pagy && @pagy.pages > 1 %>
+    <div class="bg-white px-6 py-4 border-t border-gray-200">
+      <%== @pagy.series_nav %>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,112 @@
+<% content_for(:title, "Comment Details") %>
+
+<div class="mb-6">
+  <div class="flex items-center space-x-2 text-sm text-gray-500 mb-2">
+    <%= link_to "Comments", admin_comments_path, class: "hover:text-primary-600" %>
+    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+    </svg>
+    <span class="text-gray-700">Comment #<%= @comment.id %></span>
+  </div>
+
+  <div class="flex items-center justify-between">
+    <div class="flex items-center space-x-3">
+      <h1 class="text-2xl font-bold text-gray-900">Comment Details</h1>
+      <% case @comment.status %>
+      <% when "pending" %>
+        <span class="inline-flex items-center rounded-full bg-orange-100 px-3 py-1 text-sm font-medium text-orange-800">Pending</span>
+      <% when "approved" %>
+        <span class="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800">Approved</span>
+      <% when "rejected" %>
+        <span class="inline-flex items-center rounded-full bg-red-100 px-3 py-1 text-sm font-medium text-red-800">Rejected</span>
+      <% end %>
+    </div>
+
+    <div class="flex items-center space-x-3">
+      <% unless @comment.approved? %>
+        <%= button_to approve_admin_comment_path(@comment), method: :patch, class: "inline-flex items-center rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-green-700 transition-colors" do %>
+          <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+          </svg>
+          Approve
+        <% end %>
+      <% end %>
+
+      <% unless @comment.rejected? %>
+        <%= button_to reject_admin_comment_path(@comment), method: :patch, class: "inline-flex items-center rounded-md bg-orange-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-orange-700 transition-colors" do %>
+          <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
+          </svg>
+          Reject
+        <% end %>
+      <% end %>
+
+      <%= button_to admin_comment_path(@comment), method: :delete, data: { turbo_confirm: "Are you sure you want to permanently delete this comment?" }, class: "inline-flex items-center rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700 transition-colors" do %>
+        <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+        </svg>
+        Delete
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+  <%# Comment Body %>
+  <div class="lg:col-span-2">
+    <div class="bg-white rounded-lg shadow-sm p-6">
+      <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4">Comment</h3>
+      <div class="prose max-w-none text-gray-700">
+        <%= simple_format(@comment.body) %>
+      </div>
+    </div>
+
+    <% if @comment.parent.present? %>
+      <div class="bg-white rounded-lg shadow-sm p-6 mt-6">
+        <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4">Reply To</h3>
+        <div class="border-l-4 border-gray-200 pl-4">
+          <p class="text-sm font-medium text-gray-900"><%= @comment.parent.user.full_name %></p>
+          <p class="mt-1 text-sm text-gray-600"><%= truncate(@comment.parent.body, length: 200) %></p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <%# Comment Details Sidebar %>
+  <div class="space-y-6">
+    <div class="bg-white rounded-lg shadow-sm p-6">
+      <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4">Details</h3>
+      <dl class="space-y-4">
+        <div>
+          <dt class="text-xs font-medium text-gray-500">Commenter</dt>
+          <dd class="mt-1 text-sm text-gray-900"><%= @comment.user.full_name %></dd>
+          <dd class="text-xs text-gray-500"><%= @comment.user.email %></dd>
+        </div>
+        <div>
+          <dt class="text-xs font-medium text-gray-500">Article</dt>
+          <dd class="mt-1">
+            <%= link_to @comment.article.title, admin_article_path(@comment.article), class: "text-sm text-primary-600 hover:text-primary-700" %>
+          </dd>
+        </div>
+        <div>
+          <dt class="text-xs font-medium text-gray-500">Posted</dt>
+          <dd class="mt-1 text-sm text-gray-900"><%= @comment.created_at.strftime("%b %d, %Y at %I:%M %p") %></dd>
+        </div>
+        <div>
+          <dt class="text-xs font-medium text-gray-500">Updated</dt>
+          <dd class="mt-1 text-sm text-gray-900"><%= @comment.updated_at.strftime("%b %d, %Y at %I:%M %p") %></dd>
+        </div>
+        <% if @comment.parent.present? %>
+          <div>
+            <dt class="text-xs font-medium text-gray-500">Type</dt>
+            <dd class="mt-1 text-sm text-gray-900">Reply</dd>
+          </div>
+        <% end %>
+        <div>
+          <dt class="text-xs font-medium text-gray-500">Replies</dt>
+          <dd class="mt-1 text-sm text-gray-900"><%= @comment.replies.count %></dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</div>

@@ -35,6 +35,15 @@ gem "rack-cors"
 # Pagination [https://github.com/ddnexus/pagy]
 gem "pagy"
 
+# Tailwind CSS [https://github.com/rails/tailwindcss-rails]
+gem "tailwindcss-rails"
+
+# PostgreSQL full-text search [https://github.com/Casecommons/pg_search]
+gem "pg_search"
+
+# SEO-friendly slugs [https://github.com/norman/friendly_id]
+gem "friendly_id", "~> 5.5"
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
@@ -53,7 +62,7 @@ gem "kamal", require: false
 gem "thruster", require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-# gem "image_processing", "~> 1.2"
+gem "image_processing", "~> 1.2"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

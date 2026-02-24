@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      color: #1f2937;
+      background-color: #f3f4f6;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+    .card {
+      background-color: #ffffff;
+      border-radius: 12px;
+      padding: 40px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    .logo {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .logo span {
+      font-size: 24px;
+      font-weight: 800;
+      color: #111827;
+    }
+    .logo .accent {
+      color: #2563eb;
+    }
+    h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #111827;
+      margin: 0 0 16px 0;
+    }
+    p {
+      font-size: 15px;
+      color: #4b5563;
+      margin: 0 0 16px 0;
+    }
+    .button {
+      display: inline-block;
+      background-color: #2563eb;
+      color: #ffffff !important;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 15px;
+      padding: 14px 32px;
+      border-radius: 8px;
+      margin: 8px 0 24px 0;
+    }
+    .button:hover {
+      background-color: #1d4ed8;
+    }
+    .link-text {
+      font-size: 13px;
+      color: #6b7280;
+      word-break: break-all;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid #e5e7eb;
+      margin: 24px 0;
+    }
+    .footer {
+      text-align: center;
+      font-size: 13px;
+      color: #9ca3af;
+      margin-top: 32px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="logo">
+        <span><span class="accent">News</span>Portal</span>
+      </div>
+
+      <h1>Reset Your Password</h1>
+
+      <p>Hi <%= @user.first_name %>,</p>
+
+      <p>We received a request to reset the password for your News Portal account. Click the button below to set a new password:</p>
+
+      <p style="text-align: center;">
+        <a href="<%= @reset_url %>" class="button">Reset My Password</a>
+      </p>
+
+      <p>This link will expire in <strong>2 hours</strong>. If you didn't request a password reset, you can safely ignore this email.</p>
+
+      <hr class="divider">
+
+      <p class="link-text">
+        If the button doesn't work, copy and paste this link into your browser:<br>
+        <a href="<%= @reset_url %>" style="color: #2563eb;"><%= @reset_url %></a>
+      </p>
+    </div>
+
+    <div class="footer">
+      <p>&copy; <%= Date.current.year %> News Portal. All rights reserved.</p>
+    </div>
+  </div>
+</body>
+</html>

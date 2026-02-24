@@ -1,0 +1,78 @@
+<%= render "admin/shared/form_errors", resource: @page %>
+
+<%= form_with(model: [:admin, @page], class: "space-y-6") do |f| %>
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <%# Main Content Column %>
+    <div class="lg:col-span-2 space-y-6">
+      <%# Title & Body %>
+      <div class="bg-white rounded-lg shadow-sm p-6 space-y-4">
+        <div>
+          <%= f.label :title, class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <%= f.text_field :title, class: "block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary-500 focus:ring-primary-500 focus:outline-none", placeholder: "Page title" %>
+        </div>
+
+        <div>
+          <%= f.label :body, class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <%= f.rich_text_area :body, class: "min-h-[300px]" %>
+        </div>
+      </div>
+
+      <%# SEO Section %>
+      <details class="bg-white rounded-lg shadow-sm">
+        <summary class="px-6 py-4 cursor-pointer text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg flex items-center justify-between">
+          <span>SEO Settings</span>
+          <svg class="h-5 w-5 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </summary>
+        <div class="px-6 pb-6 space-y-4 border-t border-gray-200 pt-4">
+          <div>
+            <%= f.label :meta_title, class: "block text-sm font-medium text-gray-700 mb-1" %>
+            <%= f.text_field :meta_title, class: "block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary-500 focus:ring-primary-500 focus:outline-none", placeholder: "Custom meta title (defaults to page title)" %>
+          </div>
+          <div>
+            <%= f.label :meta_description, class: "block text-sm font-medium text-gray-700 mb-1" %>
+            <%= f.text_area :meta_description, rows: 2, class: "block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary-500 focus:ring-primary-500 focus:outline-none resize-none", placeholder: "Custom meta description" %>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <%# Sidebar Column %>
+    <div class="space-y-6">
+      <%# Status %>
+      <div class="bg-white rounded-lg shadow-sm p-6">
+        <h3 class="text-sm font-medium text-gray-700 mb-4">Status</h3>
+        <%= f.select :status, Page.statuses.keys.map { |s| [s.titleize, s] }, {}, class: "block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary-500 focus:ring-primary-500 focus:outline-none" %>
+      </div>
+
+      <%# Navigation %>
+      <div class="bg-white rounded-lg shadow-sm p-6">
+        <h3 class="text-sm font-medium text-gray-700 mb-4">Navigation</h3>
+        <div class="space-y-4">
+          <label class="flex items-center space-x-3 cursor-pointer">
+            <%= f.check_box :show_in_navigation, class: "rounded border-gray-300 text-primary-600 focus:ring-primary-500" %>
+            <div>
+              <span class="text-sm font-medium text-gray-700">Show in Navigation</span>
+              <p class="text-xs text-gray-500">Display this page in the site navigation menu.</p>
+            </div>
+          </label>
+
+          <div>
+            <%= f.label :position, class: "block text-sm font-medium text-gray-700 mb-1" %>
+            <%= f.number_field :position, min: 0, class: "block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary-500 focus:ring-primary-500 focus:outline-none", placeholder: "0" %>
+            <p class="mt-1 text-xs text-gray-500">Lower numbers appear first.</p>
+          </div>
+        </div>
+      </div>
+
+      <%# Submit %>
+      <div class="bg-white rounded-lg shadow-sm p-6">
+        <div class="flex items-center justify-between space-x-3">
+          <%= link_to "Cancel", admin_pages_path, class: "inline-flex items-center rounded-md bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm border border-gray-300 hover:bg-gray-50 transition-colors" %>
+          <%= f.submit @page.persisted? ? "Update Page" : "Create Page", class: "inline-flex items-center rounded-md bg-primary-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary-700 transition-colors cursor-pointer" %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

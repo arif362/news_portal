@@ -1,0 +1,17 @@
+<%= render "admin/shared/form_errors", resource: @tag %>
+
+<%= form_with(model: [:admin, @tag], class: "space-y-6 max-w-lg") do |f| %>
+  <div class="bg-white rounded-lg shadow-sm p-6">
+    <div>
+      <%= f.label :name, class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.text_field :name, class: "block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary-500 focus:ring-primary-500 focus:outline-none", placeholder: "Tag name", autofocus: true %>
+      <p class="mt-1 text-xs text-gray-500">Tag names are automatically normalized to lowercase.</p>
+    </div>
+  </div>
+
+  <%# Submit %>
+  <div class="flex items-center justify-end space-x-3">
+    <%= link_to "Cancel", admin_tags_path, class: "inline-flex items-center rounded-md bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm border border-gray-300 hover:bg-gray-50 transition-colors" %>
+    <%= f.submit @tag.persisted? ? "Update Tag" : "Create Tag", class: "inline-flex items-center rounded-md bg-primary-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary-700 transition-colors cursor-pointer" %>
+  </div>
+<% end %>
