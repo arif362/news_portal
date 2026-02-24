@@ -10,7 +10,7 @@
   <nav class="flex space-x-8" aria-label="Comment status filters">
     <%= link_to "All", admin_comments_path,
         class: "pb-3 px-1 text-sm font-medium border-b-2 transition-colors #{params[:status].blank? ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}" %>
-    <%= link_to "Pending", admin_comments_path(status: :pending),
+    <%= link_to admin_comments_path(status: :pending),
         class: "pb-3 px-1 text-sm font-medium border-b-2 transition-colors #{params[:status] == 'pending' ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}" do %>
       Pending
       <% pending_count = Comment.pending_review.count %>
@@ -107,7 +107,7 @@
   <%# Pagination %>
   <% if @pagy && @pagy.pages > 1 %>
     <div class="bg-white px-6 py-4 border-t border-gray-200">
-      <%== pagy_nav(@pagy) %>
+      <%== @pagy.series_nav %>
     </div>
   <% end %>
 </div>
