@@ -85,28 +85,28 @@
         <span><span class="accent">News</span>Portal</span>
       </div>
 
-      <h1>Reset Your Password</h1>
+      <h1><%= t('mailer.password_reset.subject') %></h1>
 
-      <p>Hi <%= @user.first_name %>,</p>
+      <p><%= t('mailer.password_reset.greeting') %> <%= @user.first_name %>,</p>
 
-      <p>We received a request to reset the password for your News Portal account. Click the button below to set a new password:</p>
+      <p><%= t('mailer.password_reset.body') %></p>
 
       <p style="text-align: center;">
-        <a href="<%= @reset_url %>" class="button">Reset My Password</a>
+        <a href="<%= @reset_url %>" class="button"><%= t('mailer.password_reset.button') %></a>
       </p>
 
-      <p>This link will expire in <strong>2 hours</strong>. If you didn't request a password reset, you can safely ignore this email.</p>
+      <p><%= t('mailer.password_reset.expiry') %></p>
 
       <hr class="divider">
 
       <p class="link-text">
-        If the button doesn't work, copy and paste this link into your browser:<br>
+        <%= t('mailer.password_reset.fallback') %><br>
         <a href="<%= @reset_url %>" style="color: #2563eb;"><%= @reset_url %></a>
       </p>
     </div>
 
     <div class="footer">
-      <p>&copy; <%= Date.current.year %> News Portal. All rights reserved.</p>
+      <p><%= t('mailer.password_reset.copyright_html', year: Time.current.year) %></p>
     </div>
   </div>
 </body>

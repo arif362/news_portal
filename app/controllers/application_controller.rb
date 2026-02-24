@@ -2,6 +2,9 @@ class ApplicationController < ActionController::Base
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
 
+  # Locale switching (must be before Authentication so locale is set for flash messages)
+  include SetLocale
+
   # Authentication
   include Authentication
 

@@ -6,6 +6,10 @@ module Admin
     def index
       users = User.order(created_at: :desc)
       users = users.where(role: params[:role]) if params[:role].present?
+      if params[:q].present?
+        q = "%#{params[:q]}%"
+        users = users.where("first_name ILIKE :q OR last_name ILIKE :q OR email ILIKE :q OR username ILIKE :q", q: q)
+      end
       @pagy, @users = pagy(users)
     end
 

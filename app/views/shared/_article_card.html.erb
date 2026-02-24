@@ -35,10 +35,10 @@
           <span>&middot;</span>
         <% end %>
         <time datetime="<%= article.published_at&.iso8601 %>">
-          <%= time_ago_in_words(article.published_at) %> ago
+          <%= time_ago_in_words(article.published_at) %> <%= t('shared.ago') %>
         </time>
         <span>&middot;</span>
-        <span><%= article.reading_time %> min read</span>
+        <span><%= article.reading_time %> <%= t('shared.min_read') %></span>
       </div>
     </div>
   <% end %>
@@ -63,7 +63,7 @@
       </h3>
       <div class="mt-1 flex items-center gap-2 text-xs text-gray-500">
         <time datetime="<%= article.published_at&.iso8601 %>">
-          <%= time_ago_in_words(article.published_at) %> ago
+          <%= time_ago_in_words(article.published_at) %> <%= t('shared.ago') %>
         </time>
         <% if article.category.present? %>
           <span>&middot;</span>
@@ -111,7 +111,7 @@
           <% end %>
         </div>
         <time datetime="<%= article.published_at&.iso8601 %>">
-          <%= time_ago_in_words(article.published_at) %> ago
+          <%= time_ago_in_words(article.published_at) %> <%= t('shared.ago') %>
         </time>
       </div>
     </div>

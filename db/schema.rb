@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_24_092308) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_24_105930) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -70,16 +70,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_24_092308) do
     t.uuid "category_id", null: false
     t.boolean "comments_enabled", default: true, null: false
     t.datetime "created_at", null: false
-    t.text "excerpt"
+    t.jsonb "excerpt", default: {}
     t.boolean "featured", default: false, null: false
-    t.string "meta_description"
-    t.string "meta_keywords"
-    t.string "meta_title"
+    t.jsonb "meta_description", default: {}
+    t.jsonb "meta_keywords", default: {}
+    t.jsonb "meta_title", default: {}
     t.datetime "published_at"
     t.tsvector "search_vector"
     t.string "slug", null: false
     t.integer "status", default: 0, null: false
-    t.string "title", null: false
+    t.jsonb "title", default: {}
     t.datetime "updated_at", null: false
     t.integer "views_count", default: 0, null: false
     t.index ["author_id", "status"], name: "index_articles_on_author_id_and_status"
@@ -93,22 +93,22 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_24_092308) do
     t.index ["slug"], name: "index_articles_on_slug", unique: true
     t.index ["status", "published_at"], name: "index_articles_on_status_and_published_at"
     t.index ["status"], name: "index_articles_on_status"
+    t.index ["title"], name: "index_articles_on_title_gin", using: :gin
     t.index ["views_count"], name: "index_articles_on_views_count"
   end
 
   create_table "categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.boolean "active", default: true, null: false
     t.datetime "created_at", null: false
-    t.text "description"
-    t.string "meta_description"
-    t.string "meta_title"
-    t.string "name", null: false
+    t.jsonb "description", default: {}
+    t.jsonb "meta_description", default: {}
+    t.jsonb "meta_title", default: {}
+    t.jsonb "name", default: {}
     t.uuid "parent_id"
     t.integer "position", default: 0, null: false
     t.string "slug", null: false
     t.datetime "updated_at", null: false
     t.index ["active"], name: "index_categories_on_active"
-    t.index ["name"], name: "index_categories_on_name"
     t.index ["parent_id"], name: "index_categories_on_parent_id"
     t.index ["position"], name: "index_categories_on_position"
     t.index ["slug"], name: "index_categories_on_slug", unique: true
@@ -145,13 +145,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_24_092308) do
   create_table "pages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "author_id", null: false
     t.datetime "created_at", null: false
-    t.string "meta_description"
-    t.string "meta_title"
+    t.jsonb "meta_description", default: {}
+    t.jsonb "meta_title", default: {}
     t.integer "position", default: 0, null: false
     t.boolean "show_in_navigation", default: false, null: false
     t.string "slug", null: false
     t.integer "status", default: 0, null: false
-    t.string "title", null: false
+    t.jsonb "title", default: {}
     t.datetime "updated_at", null: false
     t.index ["author_id"], name: "index_pages_on_author_id"
     t.index ["show_in_navigation", "position"], name: "index_pages_on_show_in_navigation_and_position"
@@ -162,10 +162,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_24_092308) do
   create_table "tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.integer "articles_count", default: 0, null: false
     t.datetime "created_at", null: false
-    t.string "name", null: false
+    t.jsonb "name", default: {}
     t.string "slug", null: false
     t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_tags_on_name", unique: true
     t.index ["slug"], name: "index_tags_on_slug", unique: true
   end
 

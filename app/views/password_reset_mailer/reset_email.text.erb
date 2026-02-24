@@ -1,17 +1,17 @@
-News Portal - Reset Your Password
+<%= t('mailer.password_reset.text_subject') %>
 ====================================
 
-Hi <%= @user.first_name %>,
+<%= t('mailer.password_reset.greeting') %> <%= @user.first_name %>,
 
-We received a request to reset the password for your News Portal account.
+<%= t('mailer.password_reset.text_body') %>
 
-To reset your password, visit the following link:
+<%= t('mailer.password_reset.text_instructions') %>
 
 <%= @reset_url %>
 
-This link will expire in 2 hours.
+<%= t('mailer.password_reset.text_expiry') %>
 
-If you didn't request a password reset, you can safely ignore this email. Your password will remain unchanged.
+<%= t('mailer.password_reset.text_ignore') %>
 
 ---
-(c) <%= Date.current.year %> News Portal. All rights reserved.
+(c) <%= Date.current.year %> <%= t('mailer.password_reset.text_copyright') %>

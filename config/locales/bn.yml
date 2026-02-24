@@ -1,0 +1,200 @@
+bn:
+  app_name: "নিউজ পোর্টাল"
+  app_description: "ব্রেকিং নিউজ, গভীর বিশ্লেষণ এবং ব্যাপক কভারেজের জন্য আপনার বিশ্বস্ত উৎস।"
+
+  errors:
+    not_found: "তথ্য পাওয়া যায়নি"
+    unauthorized: "এই কাজটি করার অনুমতি নেই"
+    unprocessable_entity: "আপনার অনুরোধ প্রক্রিয়া করা সম্ভব হয়নি"
+    bad_request: "ভুল অনুরোধ"
+    internal_server_error: "কিছু একটা সমস্যা হয়েছে"
+    rate_limited: "অনুরোধ সীমা অতিক্রম করেছে। অনুগ্রহ করে কিছুক্ষণ পর আবার চেষ্টা করুন।"
+
+  nav:
+    search_placeholder: "নিবন্ধ অনুসন্ধান করুন..."
+    admin: "অ্যাডমিন"
+    admin_dashboard: "অ্যাডমিন ড্যাশবোর্ড"
+    sign_out: "সাইন আউট"
+    sign_in: "সাইন ইন"
+    register: "নিবন্ধন"
+    create_account: "অ্যাকাউন্ট তৈরি"
+    open_main_menu: "প্রধান মেনু খুলুন"
+
+  footer:
+    description: "ব্রেকিং নিউজ, গভীর বিশ্লেষণ এবং সবচেয়ে গুরুত্বপূর্ণ খবরের ব্যাপক কভারেজের জন্য আপনার বিশ্বস্ত উৎস।"
+    quick_links: "দ্রুত লিংক"
+    home: "হোম"
+    all_articles: "সকল নিবন্ধ"
+    categories: "বিভাগসমূহ"
+    pages: "পৃষ্ঠাসমূহ"
+    connect: "যোগাযোগ"
+    twitter: "টুইটার"
+    github: "গিটহাব"
+    linkedin: "লিংকডইন"
+    youtube: "ইউটিউব"
+    copyright_html: "&copy; %{year} নিউজ পোর্টাল। সর্বস্বত্ব সংরক্ষিত।"
+
+  home:
+    title: "হোম - সর্বশেষ সংবাদ ও ব্রেকিং স্টোরি"
+    breaking: "ব্রেকিং"
+    latest_news: "সর্বশেষ সংবাদ"
+    latest_subtitle: "সাম্প্রতিক খবরের সাথে আপডেট থাকুন"
+    view_all: "সবগুলো দেখুন"
+    no_articles: "এখনো কোনো নিবন্ধ নেই"
+    no_articles_hint: "সর্বশেষ সংবাদের জন্য শীঘ্রই আবার আসুন।"
+    view_all_articles: "সকল নিবন্ধ দেখুন"
+    browse_by_category: "বিভাগ অনুযায়ী ব্রাউজ করুন"
+    most_popular: "সর্বাধিক জনপ্রিয়"
+    popular_tags: "জনপ্রিয় ট্যাগ"
+
+  articles:
+    title: "সকল নিবন্ধ"
+    breadcrumb: "নিবন্ধসমূহ"
+    subtitle: "আমাদের সংবাদ ও গল্পের সম্পূর্ণ সংগ্রহ ব্রাউজ করুন।"
+    no_articles: "কোনো নিবন্ধ পাওয়া যায়নি"
+    no_articles_hint: "নতুন কন্টেন্টের জন্য শীঘ্রই আবার আসুন।"
+    published: "প্রকাশিত"
+    tags: "ট্যাগ"
+    related_articles: "সম্পর্কিত নিবন্ধ"
+    comments: "মন্তব্যসমূহ"
+    leave_comment: "একটি মন্তব্য করুন"
+    comments_disabled: "এই নিবন্ধে মন্তব্য নিষ্ক্রিয় আছে।"
+    sign_in_to_comment_html: "কথোপকথনে যোগ দিতে %{link} করুন।"
+    no_comments: "এখনো কোনো মন্তব্য নেই। প্রথম মন্তব্যকারী হোন!"
+
+  comments:
+    errors_title: "অনুগ্রহ করে নিম্নলিখিত ত্রুটিগুলো সংশোধন করুন:"
+    placeholder: "আপনার মন্তব্য লিখুন..."
+    moderation_notice: "মন্তব্যগুলো পর্যালোচনা করা হয় এবং অনুমোদনের পর প্রদর্শিত হবে।"
+    submit: "মন্তব্য করুন"
+    reply: "উত্তর"
+    delete_confirm: "আপনি কি এই মন্তব্যটি মুছে ফেলতে চান?"
+    delete: "মুছুন"
+
+  categories:
+    title: "বিভাগসমূহ"
+    subtitle: "বিষয় অনুযায়ী নিবন্ধ অনুসন্ধান করুন।"
+    articles_count:
+      one: "%{count}টি নিবন্ধ"
+      other: "%{count}টি নিবন্ধ"
+    subcategories_count:
+      one: "%{count}টি উপবিভাগ"
+      other: "%{count}টি উপবিভাগ"
+    subcategories: "উপবিভাগসমূহ"
+    no_categories: "এখনো কোনো বিভাগ নেই"
+    no_categories_hint: "বিভাগ তৈরি হলে এখানে প্রদর্শিত হবে।"
+    no_articles: "এই বিভাগে কোনো নিবন্ধ নেই"
+    no_articles_hint: "%{category}-এ নতুন কন্টেন্টের জন্য শীঘ্রই আবার আসুন।"
+
+  search:
+    title: "অনুসন্ধান"
+    subtitle: "আমাদের পোর্টালে নিবন্ধ, সংবাদ ও গল্প খুঁজুন।"
+    placeholder: "আপনার অনুসন্ধান লিখুন..."
+    button: "অনুসন্ধান"
+    showing_results: "ফলাফল দেখাচ্ছে"
+    no_results: "কোনো ফলাফল পাওয়া যায়নি"
+    no_results_message: "\"%{query}\" এর সাথে মিলে এমন কোনো নিবন্ধ পাওয়া যায়নি।"
+    no_results_hint: "ভিন্ন কীওয়ার্ড ব্যবহার করুন অথবা বানান পরীক্ষা করুন।"
+    browse_all: "সকল নিবন্ধ ব্রাউজ করুন"
+    start_searching: "অনুসন্ধান শুরু করুন"
+    start_hint: "নিবন্ধ খুঁজতে উপরে একটি অনুসন্ধান লিখুন।"
+
+  tags:
+    breadcrumb: "ট্যাগ"
+    articles_count:
+      one: "%{count}টি নিবন্ধ"
+      other: "%{count}টি নিবন্ধ"
+    no_articles: "এই ট্যাগে কোনো নিবন্ধ নেই"
+    no_articles_hint: "#%{tag} ট্যাগযুক্ত কোনো প্রকাশিত নিবন্ধ এখনো নেই।"
+
+  shared:
+    ago: "আগে"
+    min_read: "মিনিট পড়া"
+    views:
+      one: "%{count} ভিউ"
+      other: "%{count} ভিউ"
+    home: "হোম"
+    dismiss: "বাতিল"
+    error_count:
+      one: "%{count}টি ত্রুটি"
+      other: "%{count}টি ত্রুটি"
+    prevented_save: "আপনার অ্যাকাউন্ট তৈরিতে বাধা দিয়েছে:"
+
+  pagination:
+    label: "পৃষ্ঠা নির্দেশনা"
+    page: "পৃষ্ঠা"
+    of: "এর মধ্যে"
+    previous: "পূর্ববর্তী"
+    next: "পরবর্তী"
+
+  auth:
+    sign_in:
+      title: "সাইন ইন"
+      welcome: "নিউজ পোর্টালে আপনাকে স্বাগতম"
+      email: "ইমেইল ঠিকানা"
+      email_placeholder: "you@example.com"
+      password: "পাসওয়ার্ড"
+      password_placeholder: "আপনার পাসওয়ার্ড দিন"
+      forgot_password: "পাসওয়ার্ড ভুলে গেছেন?"
+      submit: "সাইন ইন"
+      no_account: "অ্যাকাউন্ট নেই?"
+      create_one: "একটি তৈরি করুন"
+
+    register:
+      title: "অ্যাকাউন্ট তৈরি"
+      subtitle: "আজই নিউজ পোর্টালে যোগ দিন"
+      first_name: "প্রথম নাম"
+      first_name_placeholder: "রহিম"
+      last_name: "শেষ নাম"
+      last_name_placeholder: "উদ্দিন"
+      username: "ব্যবহারকারী নাম"
+      username_placeholder: "rahimuddin"
+      username_hint: "শুধুমাত্র অক্ষর, সংখ্যা এবং আন্ডারস্কোর। ৩-৩০ অক্ষর।"
+      email: "ইমেইল ঠিকানা"
+      email_placeholder: "you@example.com"
+      password: "পাসওয়ার্ড"
+      password_hint: "সর্বনিম্ন ৮ অক্ষর"
+      password_confirmation: "পাসওয়ার্ড নিশ্চিত করুন"
+      password_confirmation_placeholder: "আবার পাসওয়ার্ড দিন"
+      submit: "অ্যাকাউন্ট তৈরি করুন"
+      have_account: "ইতিমধ্যে অ্যাকাউন্ট আছে?"
+      sign_in_link: "সাইন ইন করুন"
+
+    password_reset:
+      title: "পাসওয়ার্ড রিসেট"
+      subtitle: "আপনার ইমেইল দিন এবং আমরা রিসেট নির্দেশনা পাঠাবো।"
+      email: "ইমেইল ঠিকানা"
+      email_placeholder: "you@example.com"
+      submit: "রিসেট নির্দেশনা পাঠান"
+      remember_password: "পাসওয়ার্ড মনে আছে?"
+      back_to_sign_in: "সাইন ইনে ফিরে যান"
+
+    password_edit:
+      title: "নতুন পাসওয়ার্ড সেট করুন"
+      subtitle: "আপনার অ্যাকাউন্টের জন্য একটি শক্তিশালী পাসওয়ার্ড নির্বাচন করুন।"
+      errors_title: "অনুগ্রহ করে নিম্নলিখিত ত্রুটিগুলো সংশোধন করুন:"
+      new_password: "নতুন পাসওয়ার্ড"
+      password_hint: "সর্বনিম্ন ৮ অক্ষর"
+      confirm_password: "নতুন পাসওয়ার্ড নিশ্চিত করুন"
+      confirm_placeholder: "আবার নতুন পাসওয়ার্ড দিন"
+      submit: "পাসওয়ার্ড আপডেট করুন"
+      back_to_sign_in: "সাইন ইনে ফিরে যান"
+
+  mailer:
+    greeting: "হ্যালো"
+    signature: "নিউজ পোর্টাল টিম"
+    password_reset:
+      app_name: "নিউজপোর্টাল"
+      subject: "আপনার পাসওয়ার্ড রিসেট করুন"
+      greeting: "হ্যালো"
+      body: "আমরা আপনার নিউজ পোর্টাল অ্যাকাউন্টের পাসওয়ার্ড রিসেট করার অনুরোধ পেয়েছি। নতুন পাসওয়ার্ড সেট করতে নিচের বোতামে ক্লিক করুন:"
+      button: "পাসওয়ার্ড রিসেট করুন"
+      expiry: "এই লিংকের মেয়াদ ২ ঘণ্টা পর শেষ হবে। আপনি পাসওয়ার্ড রিসেটের অনুরোধ না করলে এই ইমেইলটি উপেক্ষা করতে পারেন।"
+      fallback: "বোতামটি কাজ না করলে এই লিংকটি আপনার ব্রাউজারে কপি করে পেস্ট করুন:"
+      copyright_html: "&copy; %{year} নিউজ পোর্টাল। সর্বস্বত্ব সংরক্ষিত।"
+      text_subject: "নিউজ পোর্টাল - আপনার পাসওয়ার্ড রিসেট করুন"
+      text_body: "আমরা আপনার নিউজ পোর্টাল অ্যাকাউন্টের পাসওয়ার্ড রিসেট করার অনুরোধ পেয়েছি।"
+      text_instructions: "আপনার পাসওয়ার্ড রিসেট করতে নিচের লিংকে যান:"
+      text_expiry: "এই লিংকের মেয়াদ ২ ঘণ্টা পর শেষ হবে।"
+      text_ignore: "আপনি পাসওয়ার্ড রিসেটের অনুরোধ না করলে এই ইমেইলটি উপেক্ষা করতে পারেন। আপনার পাসওয়ার্ড অপরিবর্তিত থাকবে।"
+      text_copyright: "নিউজ পোর্টাল। সর্বস্বত্ব সংরক্ষিত।"

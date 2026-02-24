@@ -2,6 +2,18 @@ require "faker"
 
 puts "Seeding database..."
 
+# Helper: find record by JSONB translated name column, or create it
+def find_or_create_translated!(klass, column, en_value, &block)
+  record = klass.where("#{column}->>'en' = ?", en_value).first
+  return record if record
+
+  record = klass.new
+  record.send(:"#{column}_en=", en_value)
+  yield record if block_given?
+  record.save!
+  record
+end
+
 # 1. Create admin user
 admin = User.find_or_create_by!(email: "admin@newsportal.com") do |u|
   u.username = "admin"
@@ -54,30 +66,48 @@ puts "  Created #{authors.size} authors"
 end
 puts "  Created 5 readers"
 
-# 5. Create categories with hierarchy
+# 5. Create categories with hierarchy (English + Bangla names)
 categories_data = {
-  "Politics" => [ "National", "International", "Elections" ],
-  "Technology" => [ "AI & Machine Learning", "Startups", "Gadgets" ],
-  "Business" => [ "Markets", "Economy", "Companies" ],
-  "Sports" => [ "Football", "Basketball", "Tennis" ],
-  "Health" => [ "Wellness", "Medical Research", "Nutrition" ],
-  "Entertainment" => [ "Movies", "Music", "Television" ],
-  "Science" => [ "Space", "Environment", "Innovation" ],
-  "Opinion" => [ "Editorials", "Letters", "Columnists" ]
+  "Politics" => { bn: "রাজনীতি", children: {
+    "National" => "জাতীয়", "International" => "আন্তর্জাতিক", "Elections" => "নির্বাচন"
+  } },
+  "Technology" => { bn: "প্রযুক্তি", children: {
+    "AI & Machine Learning" => "এআই ও মেশিন লার্নিং", "Startups" => "স্টার্টআপ", "Gadgets" => "গ্যাজেট"
+  } },
+  "Business" => { bn: "ব্যবসা", children: {
+    "Markets" => "বাজার", "Economy" => "অর্থনীতি", "Companies" => "কোম্পানি"
+  } },
+  "Sports" => { bn: "খেলাধুলা", children: {
+    "Football" => "ফুটবল", "Basketball" => "বাস্কেটবল", "Tennis" => "টেনিস"
+  } },
+  "Health" => { bn: "স্বাস্থ্য", children: {
+    "Wellness" => "সুস্থতা", "Medical Research" => "চিকিৎসা গবেষণা", "Nutrition" => "পুষ্টি"
+  } },
+  "Entertainment" => { bn: "বিনোদন", children: {
+    "Movies" => "চলচ্চিত্র", "Music" => "সঙ্গীত", "Television" => "টেলিভিশন"
+  } },
+  "Science" => { bn: "বিজ্ঞান", children: {
+    "Space" => "মহাকাশ", "Environment" => "পরিবেশ", "Innovation" => "উদ্ভাবন"
+  } },
+  "Opinion" => { bn: "মতামত", children: {
+    "Editorials" => "সম্পাদকীয়", "Letters" => "চিঠিপত্র", "Columnists" => "কলামিস্ট"
+  } }
 }
 
 all_categories = []
-categories_data.each_with_index do |(parent_name, children), idx|
-  parent = Category.find_or_create_by!(name: parent_name) do |c|
-    c.description = Faker::Lorem.sentence(word_count: 10)
+categories_data.each_with_index do |(parent_name, data), idx|
+  parent = find_or_create_translated!(Category, :name, parent_name) do |c|
+    c.name_bn = data[:bn]
+    c.description_en = Faker::Lorem.sentence(word_count: 10)
     c.position = idx
     c.active = true
   end
   all_categories << parent
 
-  children.each_with_index do |child_name, cidx|
-    child = Category.find_or_create_by!(name: child_name) do |c|
-      c.description = Faker::Lorem.sentence(word_count: 8)
+  data[:children].each_with_index do |(child_en, child_bn), cidx|
+    child = find_or_create_translated!(Category, :name, child_en) do |c|
+      c.name_bn = child_bn
+      c.description_en = Faker::Lorem.sentence(word_count: 8)
       c.parent = parent
       c.position = cidx
       c.active = true
@@ -87,21 +117,29 @@ categories_data.each_with_index do |(parent_name, children), idx|
 end
 puts "  Created #{all_categories.size} categories"
 
-# 6. Create tags
-tag_names = %w[breaking exclusive analysis investigation feature interview
-               editorial trending viral controversial climate
-               cryptocurrency pandemic elections ai space]
-tags = tag_names.map do |name|
-  Tag.find_or_create_by!(name: name)
+# 6. Create tags (English + Bangla)
+tag_translations = {
+  "breaking" => "ব্রেকিং", "exclusive" => "এক্সক্লুসিভ", "analysis" => "বিশ্লেষণ",
+  "investigation" => "তদন্ত", "feature" => "ফিচার", "interview" => "সাক্ষাৎকার",
+  "editorial" => "সম্পাদকীয়", "trending" => "ট্রেন্ডিং", "viral" => "ভাইরাল",
+  "controversial" => "বিতর্কিত", "climate" => "জলবায়ু", "cryptocurrency" => "ক্রিপ্টোকারেন্সি",
+  "pandemic" => "মহামারি", "elections" => "নির্বাচন", "ai" => "এআই", "space" => "মহাকাশ"
+}
+
+tags = tag_translations.map do |en_name, bn_name|
+  find_or_create_translated!(Tag, :name, en_name) do |t|
+    t.name_bn = bn_name
+  end
 end
 puts "  Created #{tags.size} tags"
 
 # 7. Create articles
 staff = [ admin, editor ] + authors
 60.times do |i|
-  title = "#{Faker::Lorem.sentence(word_count: rand(6..10)).chomp('.')} ##{i + 1}"
-  article = Article.find_or_create_by!(title: title) do |a|
-    a.excerpt = Faker::Lorem.paragraph(sentence_count: 2)
+  title_en = "#{Faker::Lorem.sentence(word_count: rand(6..10)).chomp('.')} ##{i + 1}"
+
+  article = find_or_create_translated!(Article, :title, title_en) do |a|
+    a.excerpt_en = Faker::Lorem.paragraph(sentence_count: 2)
     a.category = all_categories.sample
     a.author = staff.sample
     a.status = [ :draft, :published, :published, :published, :published ].sample
@@ -110,9 +148,9 @@ staff = [ admin, editor ] + authors
     a.breaking = [ true, false, false, false, false, false ].sample
     a.views_count = rand(0..5000)
     a.comments_enabled = true
-    a.meta_title = a.title
-    a.meta_description = a.excerpt
-    a.body = Faker::Lorem.paragraphs(number: rand(5..12)).map { |p| "<p>#{p}</p>" }.join
+    a.meta_title_en = a.title_en
+    a.meta_description_en = a.excerpt_en
+    a.body_en = Faker::Lorem.paragraphs(number: rand(5..12)).map { |p| "<p>#{p}</p>" }.join
   end
   article.tags = tags.sample(rand(1..4)) if article.article_tags.empty?
 end
@@ -145,23 +183,31 @@ Article.published.limit(30).each do |article|
 end
 puts "  Created #{Comment.count} comments"
 
-# 9. Create static pages
-[
-  { title: "About Us", show_in_navigation: true, position: 0,
-    content: "<h2>Our Mission</h2><p>#{Faker::Lorem.paragraphs(number: 3).join('</p><p>')}</p>" },
-  { title: "Contact", show_in_navigation: true, position: 1,
-    content: "<p>Email us at contact@newsportal.com</p><p>#{Faker::Lorem.paragraphs(number: 2).join('</p><p>')}</p>" },
-  { title: "Privacy Policy", show_in_navigation: true, position: 2,
-    content: "<p>#{Faker::Lorem.paragraphs(number: 5).join('</p><p>')}</p>" },
-  { title: "Terms of Service", show_in_navigation: true, position: 3,
-    content: "<p>#{Faker::Lorem.paragraphs(number: 5).join('</p><p>')}</p>" }
-].each do |page_data|
-  Page.find_or_create_by!(title: page_data[:title]) do |p|
+# 9. Create static pages (English + Bangla)
+pages_data = [
+  { en: "About Us", bn: "আমাদের সম্পর্কে", nav: true, pos: 0,
+    content_en: "<h2>Our Mission</h2><p>#{Faker::Lorem.paragraphs(number: 3).join('</p><p>')}</p>",
+    content_bn: "<h2>আমাদের লক্ষ্য</h2><p>আমরা সত্য ও নিরপেক্ষ সংবাদ পরিবেশনে প্রতিশ্রুতিবদ্ধ।</p>" },
+  { en: "Contact", bn: "যোগাযোগ", nav: true, pos: 1,
+    content_en: "<p>Email us at contact@newsportal.com</p><p>#{Faker::Lorem.paragraphs(number: 2).join('</p><p>')}</p>",
+    content_bn: "<p>ইমেইল: contact@newsportal.com</p><p>আমাদের সাথে যোগাযোগ করুন।</p>" },
+  { en: "Privacy Policy", bn: "গোপনীয়তা নীতি", nav: true, pos: 2,
+    content_en: "<p>#{Faker::Lorem.paragraphs(number: 5).join('</p><p>')}</p>",
+    content_bn: "<p>আপনার গোপনীয়তা আমাদের কাছে গুরুত্বপূর্ণ।</p>" },
+  { en: "Terms of Service", bn: "সেবার শর্তাবলী", nav: true, pos: 3,
+    content_en: "<p>#{Faker::Lorem.paragraphs(number: 5).join('</p><p>')}</p>",
+    content_bn: "<p>এই ওয়েবসাইট ব্যবহার করে আপনি নিম্নলিখিত শর্তাবলী মেনে চলতে সম্মত হচ্ছেন।</p>" }
+]
+
+pages_data.each do |pd|
+  find_or_create_translated!(Page, :title, pd[:en]) do |p|
+    p.title_bn = pd[:bn]
     p.status = :published
-    p.show_in_navigation = page_data[:show_in_navigation]
-    p.position = page_data[:position]
+    p.show_in_navigation = pd[:nav]
+    p.position = pd[:pos]
     p.author = admin
-    p.body = page_data[:content]
+    p.body_en = pd[:content_en]
+    p.body_bn = pd[:content_bn]
   end
 end
 puts "  Created #{Page.count} pages"

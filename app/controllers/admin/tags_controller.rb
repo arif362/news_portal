@@ -3,7 +3,12 @@ module Admin
     before_action :set_tag, only: [ :edit, :update, :destroy ]
 
     def index
-      @pagy, @tags = pagy(Tag.ordered)
+      tags = Tag.ordered
+      if params[:q].present?
+        q = "%#{params[:q]}%"
+        tags = tags.where("name->>'en' ILIKE :q OR name->>'bn' ILIKE :q", q: q)
+      end
+      @pagy, @tags = pagy(tags)
     end
 
     def new
@@ -41,7 +46,7 @@ module Admin
     end
 
     def tag_params
-      params.require(:tag).permit(:name)
+      params.require(:tag).permit(:name_en, :name_bn)
     end
   end
 end

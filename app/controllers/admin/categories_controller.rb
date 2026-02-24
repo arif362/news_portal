@@ -3,7 +3,13 @@ module Admin
     before_action :set_category, only: [ :edit, :update, :destroy ]
 
     def index
-      @categories = Category.roots.ordered.includes(:children)
+      if params[:q].present?
+        q = "%#{params[:q]}%"
+        @categories = Category.where("name->>'en' ILIKE :q OR name->>'bn' ILIKE :q", q: q).ordered
+        @searching = true
+      else
+        @categories = Category.roots.ordered.includes(:children)
+      end
     end
 
     def new
@@ -45,7 +51,11 @@ module Admin
     end
 
     def category_params
-      params.require(:category).permit(:name, :description, :parent_id, :position, :active, :meta_title, :meta_description)
+      params.require(:category).permit(
+        :name_en, :name_bn, :description_en, :description_bn,
+        :parent_id, :position, :active,
+        :meta_title_en, :meta_title_bn, :meta_description_en, :meta_description_bn
+      )
     end
   end
 end

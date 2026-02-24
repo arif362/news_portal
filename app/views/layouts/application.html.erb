@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full">
+<html lang="<%= I18n.locale %>" class="h-full">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
-  <title><%= content_for?(:title) ? "#{yield(:title)} | News Portal" : "News Portal" %></title>
-  <meta name="description" content="<%= content_for?(:meta_description) ? yield(:meta_description) : "Your trusted source for breaking news, in-depth analysis, and comprehensive coverage." %>">
+  <title><%= content_for?(:title) ? "#{yield(:title)} | #{t('app_name')}" : t('app_name') %></title>
+  <meta name="description" content="<%= content_for?(:meta_description) ? yield(:meta_description) : t('app_description') %>">
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 

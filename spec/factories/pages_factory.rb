@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :page do
     sequence(:title) { |n| "Page Title #{n}" }
-    body { Faker::Lorem.paragraphs(number: 3).map { |p| "<p>#{p}</p>" }.join }
+    body_en { Faker::Lorem.paragraphs(number: 3).map { |p| "<p>#{p}</p>" }.join }
     status { :draft }
     position { 0 }
     show_in_navigation { false }

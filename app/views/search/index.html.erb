@@ -1,9 +1,9 @@
-<% content_for(:title, @query.present? ? "Search: #{@query}" : "Search") %>
+<% content_for(:title, @query.present? ? "#{t('search.title')}: #{@query}" : t('search.title')) %>
 
 <div class="bg-white border-b border-gray-200">
   <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-    <h1 class="text-3xl font-bold tracking-tight text-gray-900 lg:text-4xl">Search</h1>
-    <p class="mt-2 text-base text-gray-600">Find articles, news, and stories across our portal.</p>
+    <h1 class="text-3xl font-bold tracking-tight text-gray-900 lg:text-4xl"><%= t('search.title') %></h1>
+    <p class="mt-2 text-base text-gray-600"><%= t('search.subtitle') %></p>
 
     <%# Search input %>
     <div class="mt-6">
@@ -13,11 +13,11 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
           </svg>
           <%= f.search_field :q, value: @query,
-                placeholder: "Type your search query...",
+                placeholder: t('search.placeholder'),
                 autofocus: true,
                 class: "block w-full rounded-xl border border-gray-300 bg-gray-50 py-4 pl-12 pr-24 text-base text-gray-900 placeholder-gray-500 shadow-sm transition focus:border-primary-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-500",
                 autocomplete: "off" %>
-          <%= f.submit "Search",
+          <%= f.submit t('search.button'),
                 class: "absolute right-2 top-1/2 -translate-y-1/2 rounded-lg bg-primary-600 px-6 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 cursor-pointer" %>
         </div>
       <% end %>
@@ -31,7 +31,7 @@
     <div class="mb-8">
       <% if @articles.any? %>
         <p class="text-sm text-gray-600">
-          Showing results for
+          <%= t('search.showing_results') %>
           <span class="font-semibold text-gray-900">"<%= @query %>"</span>
         </p>
       <% end %>
@@ -50,13 +50,13 @@
         <svg class="mx-auto h-12 w-12 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
         </svg>
-        <h3 class="mt-4 text-lg font-semibold text-gray-900">No results found</h3>
+        <h3 class="mt-4 text-lg font-semibold text-gray-900"><%= t('search.no_results') %></h3>
         <p class="mt-2 text-sm text-gray-500">
-          We couldn't find any articles matching "<%= @query %>".
-          <br>Try different keywords or check the spelling.
+          <%= t('search.no_results_message', query: @query) %>
+          <br><%= t('search.no_results_hint') %>
         </p>
         <div class="mt-6">
-          <%= link_to "Browse All Articles", articles_path,
+          <%= link_to t('search.browse_all'), articles_path,
                 class: "inline-flex items-center gap-2 rounded-lg bg-primary-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-primary-700" %>
         </div>
       </div>
@@ -67,8 +67,8 @@
       <svg class="mx-auto h-12 w-12 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
       </svg>
-      <h3 class="mt-4 text-lg font-semibold text-gray-900">Start searching</h3>
-      <p class="mt-1 text-sm text-gray-500">Enter a search term above to find articles.</p>
+      <h3 class="mt-4 text-lg font-semibold text-gray-900"><%= t('search.start_searching') %></h3>
+      <p class="mt-1 text-sm text-gray-500"><%= t('search.start_hint') %></p>
     </div>
   <% end %>
 </div>
