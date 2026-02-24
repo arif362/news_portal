@@ -1,0 +1,95 @@
+<%# Admin Sidebar Navigation %>
+<aside class="fixed inset-y-0 left-0 z-40 w-64 bg-gray-900 text-white transform -translate-x-full lg:translate-x-0 transition-transform duration-200 ease-in-out overflow-y-auto"
+       data-admin-sidebar-target="sidebar">
+  <%# Logo %>
+  <div class="flex items-center justify-between px-6 py-5 border-b border-gray-800">
+    <div class="flex items-center space-x-2">
+      <span class="text-xl font-bold text-white">News Portal</span>
+      <span class="inline-flex items-center rounded-md bg-primary-600 px-2 py-0.5 text-xs font-medium text-white">
+        Admin
+      </span>
+    </div>
+    <button class="lg:hidden text-gray-400 hover:text-white" data-action="click->admin-sidebar#close">
+      <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
+  </div>
+
+  <%# Navigation Links %>
+  <nav class="px-4 py-4 space-y-1">
+    <%# Dashboard %>
+    <%= link_to admin_root_path, class: "flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors #{controller_name == 'dashboard' ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}" do %>
+      <svg class="h-5 w-5 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+      </svg>
+      Dashboard
+    <% end %>
+
+    <%# Articles %>
+    <%= link_to admin_articles_path, class: "flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors #{controller_name == 'articles' ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}" do %>
+      <svg class="h-5 w-5 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+      </svg>
+      Articles
+    <% end %>
+
+    <%# Categories %>
+    <%= link_to admin_categories_path, class: "flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors #{controller_name == 'categories' ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}" do %>
+      <svg class="h-5 w-5 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+      </svg>
+      Categories
+    <% end %>
+
+    <%# Tags %>
+    <%= link_to admin_tags_path, class: "flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors #{controller_name == 'tags' ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}" do %>
+      <svg class="h-5 w-5 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+      </svg>
+      Tags
+    <% end %>
+
+    <%# Comments %>
+    <%= link_to admin_comments_path, class: "flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors #{controller_name == 'comments' ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}" do %>
+      <svg class="h-5 w-5 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
+      </svg>
+      Comments
+      <% pending_count = Comment.pending_review.count %>
+      <% if pending_count > 0 %>
+        <span class="ml-auto inline-flex items-center justify-center rounded-full bg-red-600 px-2 py-0.5 text-xs font-medium text-white">
+          <%= pending_count %>
+        </span>
+      <% end %>
+    <% end %>
+
+    <%# Users (admin only) %>
+    <% if current_user.admin? %>
+      <%= link_to admin_users_path, class: "flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors #{controller_name == 'users' ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}" do %>
+        <svg class="h-5 w-5 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"/>
+        </svg>
+        Users
+      <% end %>
+    <% end %>
+
+    <%# Pages %>
+    <%= link_to admin_pages_path, class: "flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors #{controller_name == 'pages' ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}" do %>
+      <svg class="h-5 w-5 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+      </svg>
+      Pages
+    <% end %>
+  </nav>
+
+  <%# Bottom Section %>
+  <div class="absolute bottom-0 left-0 right-0 px-4 py-4 border-t border-gray-800">
+    <%= link_to root_path, class: "flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-colors" do %>
+      <svg class="h-5 w-5 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+      </svg>
+      Back to Site
+    <% end %>
+  </div>
+</aside>

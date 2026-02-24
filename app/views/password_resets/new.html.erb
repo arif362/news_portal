@@ -1,0 +1,35 @@
+<% content_for(:title, "Reset Password") %>
+
+<h2 class="text-center text-2xl font-bold tracking-tight text-gray-900">
+  Reset Password
+</h2>
+<p class="mt-2 text-center text-sm text-gray-600">
+  Enter your email and we'll send you reset instructions.
+</p>
+
+<%= form_with url: password_reset_path, class: "mt-8 space-y-5" do |f| %>
+  <div>
+    <%= f.label :email, "Email address", class: "block text-sm font-medium text-gray-700" %>
+    <div class="mt-1">
+      <%= f.email_field :email,
+            autofocus: true,
+            autocomplete: "email",
+            required: true,
+            placeholder: "you@example.com",
+            class: "block w-full rounded-lg border border-gray-300 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 shadow-sm transition focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500" %>
+    </div>
+  </div>
+
+  <div>
+    <%= f.submit "Send Reset Instructions",
+          class: "flex w-full justify-center rounded-lg bg-primary-600 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 cursor-pointer" %>
+  </div>
+<% end %>
+
+<div class="mt-6 text-center">
+  <p class="text-sm text-gray-600">
+    Remember your password?
+    <%= link_to "Back to sign in", login_path,
+          class: "font-semibold text-primary-600 transition hover:text-primary-500" %>
+  </p>
+</div>

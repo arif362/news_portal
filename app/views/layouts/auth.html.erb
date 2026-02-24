@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= content_for?(:title) ? "#{yield(:title)} | News Portal" : "News Portal" %></title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%# Google Fonts: Inter (sans) and Merriweather (serif) %>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
+  <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+  <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+  <%= javascript_importmap_tags %>
+</head>
+<body class="h-full bg-gray-100 font-sans antialiased">
+  <div class="flex min-h-full flex-col items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
+    <div class="w-full max-w-md">
+      <%# Logo / Brand %>
+      <div class="mb-8 text-center">
+        <%= link_to root_path, class: "inline-block" do %>
+          <h1 class="text-3xl font-extrabold tracking-tight text-gray-900">
+            <span class="text-primary-600">News</span>Portal
+          </h1>
+          <p class="mt-1 text-sm text-gray-500">Your trusted news source</p>
+        <% end %>
+      </div>
+
+      <%# Flash messages %>
+      <%= render "shared/flash_messages" %>
+
+      <%# Auth card %>
+      <div class="rounded-xl bg-white px-8 py-10 shadow-lg ring-1 ring-gray-900/5">
+        <%= yield %>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

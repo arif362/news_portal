@@ -1,0 +1,166 @@
+<% content_for(:title, "Dashboard") %>
+
+<%# Stats Cards %>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+  <%# Total Articles %>
+  <div class="bg-white rounded-lg shadow-sm p-6">
+    <div class="flex items-center">
+      <div class="flex-shrink-0 rounded-lg bg-blue-100 p-3">
+        <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+        </svg>
+      </div>
+      <div class="ml-4">
+        <p class="text-sm font-medium text-gray-500">Total Articles</p>
+        <p class="text-2xl font-bold text-gray-900"><%= @total_articles %></p>
+      </div>
+    </div>
+  </div>
+
+  <%# Published Articles %>
+  <div class="bg-white rounded-lg shadow-sm p-6">
+    <div class="flex items-center">
+      <div class="flex-shrink-0 rounded-lg bg-green-100 p-3">
+        <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+      </div>
+      <div class="ml-4">
+        <p class="text-sm font-medium text-gray-500">Published</p>
+        <p class="text-2xl font-bold text-gray-900"><%= @published_articles %></p>
+      </div>
+    </div>
+  </div>
+
+  <%# Pending Comments %>
+  <div class="bg-white rounded-lg shadow-sm p-6">
+    <div class="flex items-center">
+      <div class="flex-shrink-0 rounded-lg bg-orange-100 p-3">
+        <svg class="h-6 w-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
+        </svg>
+      </div>
+      <div class="ml-4">
+        <p class="text-sm font-medium text-gray-500">Pending Comments</p>
+        <p class="text-2xl font-bold text-gray-900"><%= @pending_comments %></p>
+      </div>
+    </div>
+  </div>
+
+  <%# Total Users %>
+  <div class="bg-white rounded-lg shadow-sm p-6">
+    <div class="flex items-center">
+      <div class="flex-shrink-0 rounded-lg bg-purple-100 p-3">
+        <svg class="h-6 w-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"/>
+        </svg>
+      </div>
+      <div class="ml-4">
+        <p class="text-sm font-medium text-gray-500">Total Users</p>
+        <p class="text-2xl font-bold text-gray-900"><%= @total_users %></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+  <%# Recent Articles %>
+  <div class="bg-white rounded-lg shadow-sm">
+    <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+      <h3 class="text-lg font-semibold text-gray-900">Recent Articles</h3>
+      <%= link_to "View All", admin_articles_path, class: "text-sm text-primary-600 hover:text-primary-700 font-medium" %>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Author</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <% @recent_articles.each do |article| %>
+            <tr class="hover:bg-gray-50">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <%= link_to truncate(article.title, length: 40), admin_article_path(article), class: "text-sm font-medium text-gray-900 hover:text-primary-600" %>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <%= article.author.full_name %>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <%= article.category.name %>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <% case article.status %>
+                <% when "published" %>
+                  <span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">Published</span>
+                <% when "draft" %>
+                  <span class="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">Draft</span>
+                <% when "archived" %>
+                  <span class="inline-flex items-center rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800">Archived</span>
+                <% end %>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <%= article.created_at.strftime("%b %d, %Y") %>
+              </td>
+            </tr>
+          <% end %>
+
+          <% if @recent_articles.empty? %>
+            <tr>
+              <td colspan="5" class="px-6 py-8 text-center text-sm text-gray-500">
+                No articles yet.
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <%# Pending Comments %>
+  <div class="bg-white rounded-lg shadow-sm">
+    <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+      <h3 class="text-lg font-semibold text-gray-900">Pending Comments</h3>
+      <%= link_to "View All", admin_comments_path(status: :pending), class: "text-sm text-primary-600 hover:text-primary-700 font-medium" %>
+    </div>
+    <div class="divide-y divide-gray-200">
+      <% @recent_comments.each do |comment| %>
+        <div class="px-6 py-4 hover:bg-gray-50">
+          <div class="flex items-start justify-between">
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-medium text-gray-900">
+                <%= comment.user.full_name %>
+                <span class="font-normal text-gray-500">on</span>
+                <%= link_to truncate(comment.article.title, length: 30), admin_article_path(comment.article), class: "text-primary-600 hover:text-primary-700" %>
+              </p>
+              <p class="mt-1 text-sm text-gray-600 line-clamp-2">
+                <%= truncate(comment.body, length: 120) %>
+              </p>
+              <p class="mt-1 text-xs text-gray-400">
+                <%= time_ago_in_words(comment.created_at) %> ago
+              </p>
+            </div>
+            <div class="ml-4 flex items-center space-x-2 shrink-0">
+              <%= button_to approve_admin_comment_path(comment), method: :patch, class: "inline-flex items-center rounded-md bg-green-600 px-2.5 py-1.5 text-xs font-medium text-white hover:bg-green-700 transition-colors" do %>
+                Approve
+              <% end %>
+              <%= button_to reject_admin_comment_path(comment), method: :patch, class: "inline-flex items-center rounded-md bg-red-600 px-2.5 py-1.5 text-xs font-medium text-white hover:bg-red-700 transition-colors" do %>
+                Reject
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <% if @recent_comments.empty? %>
+        <div class="px-6 py-8 text-center text-sm text-gray-500">
+          No pending comments.
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

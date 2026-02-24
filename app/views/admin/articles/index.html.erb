@@ -1,0 +1,117 @@
+<% content_for(:title, "Articles") %>
+
+<%# Header %>
+<div class="flex items-center justify-between mb-6">
+  <h1 class="text-2xl font-bold text-gray-900">Articles</h1>
+  <%= link_to new_admin_article_path, class: "inline-flex items-center rounded-md bg-primary-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary-700 transition-colors" do %>
+    <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+    </svg>
+    New Article
+  <% end %>
+</div>
+
+<%# Status Filter Tabs %>
+<div class="mb-6 border-b border-gray-200">
+  <nav class="flex space-x-8" aria-label="Article status filters">
+    <%= link_to "All", admin_articles_path,
+        class: "pb-3 px-1 text-sm font-medium border-b-2 transition-colors #{params[:status].blank? ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}" %>
+    <%= link_to "Published", admin_articles_path(status: :published),
+        class: "pb-3 px-1 text-sm font-medium border-b-2 transition-colors #{params[:status] == 'published' ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}" %>
+    <%= link_to "Draft", admin_articles_path(status: :draft),
+        class: "pb-3 px-1 text-sm font-medium border-b-2 transition-colors #{params[:status] == 'draft' ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}" %>
+    <%= link_to "Archived", admin_articles_path(status: :archived),
+        class: "pb-3 px-1 text-sm font-medium border-b-2 transition-colors #{params[:status] == 'archived' ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}" %>
+  </nav>
+</div>
+
+<%# Articles Table %>
+<div class="bg-white rounded-lg shadow-sm overflow-hidden">
+  <div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Author</th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Published</th>
+          <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        <% @articles.each do |article| %>
+          <tr class="hover:bg-gray-50">
+            <td class="px-6 py-4">
+              <div class="flex items-center">
+                <div>
+                  <%= link_to admin_article_path(article), class: "text-sm font-medium text-gray-900 hover:text-primary-600" do %>
+                    <%= truncate(article.title, length: 50) %>
+                  <% end %>
+                  <% if article.featured? %>
+                    <span class="ml-1 inline-flex items-center rounded-full bg-yellow-100 px-1.5 py-0.5 text-xs font-medium text-yellow-800">Featured</span>
+                  <% end %>
+                  <% if article.breaking? %>
+                    <span class="ml-1 inline-flex items-center rounded-full bg-red-100 px-1.5 py-0.5 text-xs font-medium text-red-800">Breaking</span>
+                  <% end %>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              <%= article.author.full_name %>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              <%= article.category.name %>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <% case article.status %>
+              <% when "published" %>
+                <span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">Published</span>
+              <% when "draft" %>
+                <span class="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">Draft</span>
+              <% when "archived" %>
+                <span class="inline-flex items-center rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800">Archived</span>
+              <% end %>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              <%= article.published_at&.strftime("%b %d, %Y") || "---" %>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+              <div class="flex items-center justify-end space-x-3">
+                <%= link_to edit_admin_article_path(article), class: "text-primary-600 hover:text-primary-700" do %>
+                  <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                  </svg>
+                <% end %>
+                <%= button_to admin_article_path(article), method: :delete, data: { turbo_confirm: "Are you sure you want to delete this article?" }, class: "text-red-600 hover:text-red-700" do %>
+                  <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                  </svg>
+                <% end %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+
+        <% if @articles.empty? %>
+          <tr>
+            <td colspan="6" class="px-6 py-12 text-center text-sm text-gray-500">
+              <svg class="mx-auto h-12 w-12 text-gray-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+              </svg>
+              <p class="font-medium">No articles found</p>
+              <p class="mt-1 text-gray-400">Get started by creating a new article.</p>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <%# Pagination %>
+  <% if @pagy && @pagy.pages > 1 %>
+    <div class="bg-white px-6 py-4 border-t border-gray-200">
+      <%== pagy_nav(@pagy) %>
+    </div>
+  <% end %>
+</div>

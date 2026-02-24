@@ -1,0 +1,127 @@
+<%= render "admin/shared/form_errors", resource: @article %>
+
+<%= form_with(model: [:admin, @article], class: "space-y-6") do |f| %>
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <%# Main Content Column %>
+    <div class="lg:col-span-2 space-y-6">
+      <%# Title %>
+      <div class="bg-white rounded-lg shadow-sm p-6">
+        <div class="space-y-4">
+          <div>
+            <%= f.label :title, class: "block text-sm font-medium text-gray-700 mb-1" %>
+            <%= f.text_field :title, class: "block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary-500 focus:ring-primary-500 focus:outline-none", placeholder: "Enter article title" %>
+          </div>
+
+          <%# Excerpt %>
+          <div>
+            <%= f.label :excerpt, class: "block text-sm font-medium text-gray-700 mb-1" %>
+            <%= f.text_area :excerpt, rows: 3, maxlength: 500, class: "block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary-500 focus:ring-primary-500 focus:outline-none resize-none", placeholder: "Brief summary of the article (max 500 characters)" %>
+            <p class="mt-1 text-xs text-gray-500">Max 500 characters. Used for article previews and meta description.</p>
+          </div>
+
+          <%# Body (Rich Text) %>
+          <div>
+            <%= f.label :body, class: "block text-sm font-medium text-gray-700 mb-1" %>
+            <%= f.rich_text_area :body, class: "min-h-[300px]" %>
+          </div>
+        </div>
+      </div>
+
+      <%# Featured Image %>
+      <div class="bg-white rounded-lg shadow-sm p-6">
+        <h3 class="text-sm font-medium text-gray-700 mb-4">Featured Image</h3>
+        <% if @article.persisted? && @article.featured_image.attached? %>
+          <div class="mb-4">
+            <%= image_tag @article.featured_image, class: "rounded-lg max-h-48 object-cover" %>
+          </div>
+        <% end %>
+        <%= f.file_field :featured_image, accept: "image/*", class: "block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100 cursor-pointer" %>
+        <p class="mt-1 text-xs text-gray-500">Accepted formats: JPG, PNG, GIF, WebP. Recommended size: 1200x630px.</p>
+      </div>
+
+      <%# SEO Section (Collapsible) %>
+      <details class="bg-white rounded-lg shadow-sm">
+        <summary class="px-6 py-4 cursor-pointer text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg flex items-center justify-between">
+          <span>SEO Settings</span>
+          <svg class="h-5 w-5 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </summary>
+        <div class="px-6 pb-6 space-y-4 border-t border-gray-200 pt-4">
+          <div>
+            <%= f.label :meta_title, class: "block text-sm font-medium text-gray-700 mb-1" %>
+            <%= f.text_field :meta_title, class: "block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary-500 focus:ring-primary-500 focus:outline-none", placeholder: "Custom meta title (defaults to article title)" %>
+          </div>
+          <div>
+            <%= f.label :meta_description, class: "block text-sm font-medium text-gray-700 mb-1" %>
+            <%= f.text_area :meta_description, rows: 2, class: "block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary-500 focus:ring-primary-500 focus:outline-none resize-none", placeholder: "Custom meta description (defaults to excerpt)" %>
+          </div>
+          <div>
+            <%= f.label :meta_keywords, class: "block text-sm font-medium text-gray-700 mb-1" %>
+            <%= f.text_field :meta_keywords, class: "block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary-500 focus:ring-primary-500 focus:outline-none", placeholder: "Comma-separated keywords" %>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <%# Sidebar Column %>
+    <div class="space-y-6">
+      <%# Category %>
+      <div class="bg-white rounded-lg shadow-sm p-6">
+        <h3 class="text-sm font-medium text-gray-700 mb-4">Category</h3>
+        <%= f.select :category_id, Category.active.ordered.pluck(:name, :id), { prompt: "Select a category" }, class: "block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary-500 focus:ring-primary-500 focus:outline-none" %>
+      </div>
+
+      <%# Tags %>
+      <div class="bg-white rounded-lg shadow-sm p-6">
+        <h3 class="text-sm font-medium text-gray-700 mb-4">Tags</h3>
+        <div class="space-y-2 max-h-48 overflow-y-auto">
+          <% Tag.ordered.each do |tag| %>
+            <label class="flex items-center space-x-2 cursor-pointer">
+              <%= check_box_tag "article[tag_ids][]", tag.id, @article.tag_ids.include?(tag.id), class: "rounded border-gray-300 text-primary-600 focus:ring-primary-500" %>
+              <span class="text-sm text-gray-700"><%= tag.name %></span>
+            </label>
+          <% end %>
+        </div>
+        <%# Hidden field to allow clearing all tags %>
+        <%= hidden_field_tag "article[tag_ids][]", "" %>
+      </div>
+
+      <%# Options %>
+      <div class="bg-white rounded-lg shadow-sm p-6">
+        <h3 class="text-sm font-medium text-gray-700 mb-4">Options</h3>
+        <div class="space-y-3">
+          <label class="flex items-center space-x-3 cursor-pointer">
+            <%= f.check_box :featured, class: "rounded border-gray-300 text-primary-600 focus:ring-primary-500" %>
+            <div>
+              <span class="text-sm font-medium text-gray-700">Featured</span>
+              <p class="text-xs text-gray-500">Show in featured section on homepage</p>
+            </div>
+          </label>
+          <label class="flex items-center space-x-3 cursor-pointer">
+            <%= f.check_box :breaking, class: "rounded border-gray-300 text-primary-600 focus:ring-primary-500" %>
+            <div>
+              <span class="text-sm font-medium text-gray-700">Breaking News</span>
+              <p class="text-xs text-gray-500">Display as breaking news alert</p>
+            </div>
+          </label>
+          <label class="flex items-center space-x-3 cursor-pointer">
+            <%= f.check_box :comments_enabled, class: "rounded border-gray-300 text-primary-600 focus:ring-primary-500" %>
+            <div>
+              <span class="text-sm font-medium text-gray-700">Enable Comments</span>
+              <p class="text-xs text-gray-500">Allow readers to comment on this article</p>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <%# Submit %>
+      <div class="bg-white rounded-lg shadow-sm p-6">
+        <div class="flex items-center justify-between space-x-3">
+          <%= link_to "Cancel", admin_articles_path, class: "inline-flex items-center rounded-md bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm border border-gray-300 hover:bg-gray-50 transition-colors" %>
+          <%= f.submit @article.persisted? ? "Update Article" : "Create Article", class: "inline-flex items-center rounded-md bg-primary-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary-700 transition-colors cursor-pointer" %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

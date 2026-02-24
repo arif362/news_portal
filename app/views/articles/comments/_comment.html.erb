@@ -1,0 +1,69 @@
+<div class="rounded-xl bg-white p-5 shadow-sm ring-1 ring-gray-900/5" id="comment-<%= comment.id %>">
+  <div class="flex items-start gap-3">
+    <%# Avatar %>
+    <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary-100 text-sm font-bold text-primary-700">
+      <%= comment.user.first_name[0] %><%= comment.user.last_name[0] %>
+    </div>
+
+    <div class="min-w-0 flex-1">
+      <%# Comment header %>
+      <div class="flex items-center gap-2">
+        <span class="text-sm font-semibold text-gray-900"><%= comment.user.full_name %></span>
+        <span class="text-xs text-gray-400">&middot;</span>
+        <time class="text-xs text-gray-500" datetime="<%= comment.created_at.iso8601 %>">
+          <%= time_ago_in_words(comment.created_at) %> ago
+        </time>
+      </div>
+
+      <%# Comment body %>
+      <div class="mt-2 text-sm leading-relaxed text-gray-700">
+        <%= simple_format(comment.body, class: "mb-0") %>
+      </div>
+
+      <%# Actions %>
+      <div class="mt-3 flex items-center gap-4">
+        <% if signed_in? && article.comments_enabled? %>
+          <button type="button"
+                  class="inline-flex items-center gap-1 text-xs font-medium text-gray-500 transition hover:text-primary-600"
+                  data-controller="comment-reply"
+                  data-action="click->comment-reply#toggle"
+                  data-comment-reply-comment-id-value="<%= comment.id %>">
+            <svg class="h-3.5 w-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+            </svg>
+            Reply
+          </button>
+        <% end %>
+
+        <% if signed_in? && (current_user == comment.user || current_user.admin?) %>
+          <%= button_to "Delete", article_comment_path(article, comment),
+                method: :delete,
+                class: "inline-flex items-center gap-1 text-xs font-medium text-gray-400 transition hover:text-red-600",
+                data: { turbo_confirm: "Are you sure you want to delete this comment?" } do %>
+            <svg class="h-3.5 w-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+            </svg>
+            Delete
+          <% end %>
+        <% end %>
+      </div>
+
+      <%# Reply form (hidden by default, toggled by Stimulus) %>
+      <% if signed_in? && article.comments_enabled? %>
+        <div class="mt-4 hidden" data-comment-reply-target="form" id="reply-form-<%= comment.id %>">
+          <% reply = Comment.new(parent_id: comment.id) %>
+          <%= render "articles/comments/form", article: article, comment: reply %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <%# Nested replies %>
+  <% if comment.replies.approved.any? %>
+    <div class="mt-4 ml-13 space-y-4 border-l-2 border-gray-100 pl-4">
+      <% comment.replies.approved.order(created_at: :asc).each do |reply| %>
+        <%= render "articles/comments/comment", comment: reply, article: article %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

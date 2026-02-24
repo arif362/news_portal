@@ -1,0 +1,32 @@
+<%= form_with model: [article, comment], class: "space-y-4" do |f| %>
+  <% if comment.errors.any? %>
+    <div class="rounded-lg border border-red-200 bg-red-50 p-4">
+      <div class="flex items-center gap-2">
+        <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-8-5a.75.75 0 0 1 .75.75v4.5a.75.75 0 0 1-1.5 0v-4.5A.75.75 0 0 1 10 5Zm0 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clip-rule="evenodd" />
+        </svg>
+        <p class="text-sm font-medium text-red-800">Please fix the following errors:</p>
+      </div>
+      <ul class="mt-2 ml-7 list-disc space-y-1">
+        <% comment.errors.full_messages.each do |message| %>
+          <li class="text-sm text-red-700"><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= f.hidden_field :parent_id %>
+
+  <div>
+    <%= f.text_area :body,
+          rows: 4,
+          placeholder: "Write your comment...",
+          class: "block w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder-gray-500 shadow-sm transition focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 resize-y" %>
+  </div>
+
+  <div class="flex items-center justify-between">
+    <p class="text-xs text-gray-500">Comments are moderated and will appear after approval.</p>
+    <%= f.submit "Post Comment",
+          class: "inline-flex items-center rounded-lg bg-primary-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 cursor-pointer" %>
+  </div>
+<% end %>

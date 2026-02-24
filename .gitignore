@@ -58,3 +58,6 @@ spec/examples.txt
 
 # VSCode settings
 .vscode/
+
+/app/assets/builds/*
+!/app/assets/builds/.keep
