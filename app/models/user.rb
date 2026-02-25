@@ -37,6 +37,14 @@ class User < ApplicationRecord
     I18n.locale == :bn ? full_name_bn : full_name
   end
 
+  def localized_initials
+    if I18n.locale == :bn && first_name_bn.present? && last_name_bn.present?
+      "#{first_name_bn[0]}#{last_name_bn[0]}"
+    else
+      "#{first_name[0]}#{last_name[0]}"
+    end
+  end
+
   def localized_role
     I18n.t("roles.#{role}")
   end

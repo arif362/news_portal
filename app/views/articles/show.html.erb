@@ -42,7 +42,7 @@
             <%= image_tag @article.author.avatar, class: "h-12 w-12 rounded-full object-cover ring-2 ring-white", alt: @article.author.localized_full_name %>
           <% else %>
             <div class="flex h-12 w-12 items-center justify-center rounded-full bg-primary-100 text-sm font-bold text-primary-700 ring-2 ring-white">
-              <%= @article.author.first_name[0] %><%= @article.author.last_name[0] %>
+              <%= @article.author.localized_initials %>
             </div>
           <% end %>
           <div>

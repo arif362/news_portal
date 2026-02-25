@@ -41,7 +41,7 @@
           <%= image_tag @user.avatar, class: "h-24 w-24 rounded-full object-cover mx-auto" %>
         <% else %>
           <div class="h-24 w-24 rounded-full bg-gray-200 flex items-center justify-center mx-auto">
-            <span class="text-2xl font-medium text-gray-500"><%= @user.first_name[0] %><%= @user.last_name[0] %></span>
+            <span class="text-2xl font-medium text-gray-500"><%= @user.localized_initials %></span>
           </div>
         <% end %>
       </div>

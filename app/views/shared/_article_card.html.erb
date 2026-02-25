@@ -105,7 +105,7 @@
         <div class="flex items-center gap-2">
           <% if article.author.present? %>
             <div class="flex h-6 w-6 items-center justify-center rounded-full bg-primary-100 text-xs font-semibold text-primary-700">
-              <%= article.author.first_name[0] %><%= article.author.last_name[0] %>
+              <%= article.author.localized_initials %>
             </div>
             <span class="font-medium text-gray-700"><%= article.author.localized_full_name %></span>
           <% end %>
