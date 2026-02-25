@@ -198,3 +198,9 @@ en:
       text_expiry: "This link will expire in 2 hours."
       text_ignore: "If you didn't request a password reset, you can safely ignore this email. Your password will remain unchanged."
       text_copyright: "News Portal. All rights reserved."
+
+  roles:
+    reader: "Reader"
+    author: "Author"
+    editor: "Editor"
+    admin: "Admin"

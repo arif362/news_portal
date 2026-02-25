@@ -8,7 +8,7 @@
     <div class="min-w-0 flex-1">
       <%# Comment header %>
       <div class="flex items-center gap-2">
-        <span class="text-sm font-semibold text-gray-900"><%= comment.user.full_name %></span>
+        <span class="text-sm font-semibold text-gray-900"><%= comment.user.localized_full_name %></span>
         <span class="text-xs text-gray-400">&middot;</span>
         <time class="text-xs text-gray-500" datetime="<%= comment.created_at.iso8601 %>">
           <%= time_ago_in_words(comment.created_at) %> <%= t('shared.ago') %>

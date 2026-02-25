@@ -39,14 +39,14 @@
       <div class="mt-6 flex items-center gap-4 border-b border-gray-200 pb-6">
         <% if @article.author.present? %>
           <% if @article.author.avatar.attached? %>
-            <%= image_tag @article.author.avatar, class: "h-12 w-12 rounded-full object-cover ring-2 ring-white", alt: @article.author.full_name %>
+            <%= image_tag @article.author.avatar, class: "h-12 w-12 rounded-full object-cover ring-2 ring-white", alt: @article.author.localized_full_name %>
           <% else %>
             <div class="flex h-12 w-12 items-center justify-center rounded-full bg-primary-100 text-sm font-bold text-primary-700 ring-2 ring-white">
               <%= @article.author.first_name[0] %><%= @article.author.last_name[0] %>
             </div>
           <% end %>
           <div>
-            <p class="text-sm font-semibold text-gray-900"><%= @article.author.full_name %></p>
+            <p class="text-sm font-semibold text-gray-900"><%= @article.author.localized_full_name %></p>
             <p class="text-sm text-gray-500">
               <%= t('articles.published') %> <%= time_ago_in_words(@article.published_at) %> <%= t('shared.ago') %>
               &middot; <%= t('shared.views', count: @article.views_count) %>

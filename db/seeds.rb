@@ -32,10 +32,12 @@ rescue OpenURI::HTTPError, SocketError => e
 end
 
 # 1. Create admin user
-admin = User.find_or_create_by!(email: "admin@newsportal.com") do |u|
+admin = User.find_or_create_by!(email: "admin@newstime.com") do |u|
   u.username = "admin"
   u.first_name = "Admin"
   u.last_name = "User"
+  u.first_name_bn = "অ্যাডমিন"
+  u.last_name_bn = "ইউজার"
   u.password = "password123"
   u.password_confirmation = "password123"
   u.role = :admin
@@ -44,10 +46,12 @@ end
 puts "  Admin: #{admin.email} / password123"
 
 # 2. Create editor
-editor = User.find_or_create_by!(email: "editor@newsportal.com") do |u|
+editor = User.find_or_create_by!(email: "editor@newstime.com") do |u|
   u.username = "editor"
   u.first_name = "Sarah"
   u.last_name = "Editor"
+  u.first_name_bn = "সারাহ"
+  u.last_name_bn = "সম্পাদক"
   u.password = "password123"
   u.password_confirmation = "password123"
   u.role = :editor
@@ -56,11 +60,15 @@ end
 puts "  Editor: #{editor.email}"
 
 # 3. Create authors
+bangla_first_names = ["রহিম", "করিম", "ফারহানা"]
+bangla_last_names = ["আহমেদ", "হাসান", "খান"]
 authors = 3.times.map do |i|
-  User.find_or_create_by!(email: "author#{i + 1}@newsportal.com") do |u|
+  User.find_or_create_by!(email: "author#{i + 1}@newstime.com") do |u|
     u.username = "author#{i + 1}"
     u.first_name = Faker::Name.first_name
     u.last_name = Faker::Name.last_name
+    u.first_name_bn = bangla_first_names[i]
+    u.last_name_bn = bangla_last_names[i]
     u.password = "password123"
     u.password_confirmation = "password123"
     u.role = :author
@@ -70,11 +78,15 @@ end
 puts "  Created #{authors.size} authors"
 
 # 4. Create reader users
+bangla_reader_first = ["মাহমুদ", "নাজমুল", "সাদিয়া", "আয়েশা", "রাহেলা"]
+bangla_reader_last = ["ইসলাম", "হক", "রহমান", "বেগম", "খাতুন"]
 5.times do |i|
-  User.find_or_create_by!(email: "reader#{i + 1}@newsportal.com") do |u|
+  User.find_or_create_by!(email: "reader#{i + 1}@newstime.com") do |u|
     u.username = "reader#{i + 1}"
     u.first_name = Faker::Name.first_name
     u.last_name = Faker::Name.last_name
+    u.first_name_bn = bangla_reader_first[i]
+    u.last_name_bn = bangla_reader_last[i]
     u.password = "password123"
     u.password_confirmation = "password123"
     u.role = :reader

@@ -132,7 +132,7 @@
       <%# Mobile auth links %>
       <% if signed_in? %>
         <div class="space-y-1">
-          <p class="px-3 py-2 text-sm font-semibold text-gray-900"><%= current_user.full_name %></p>
+          <p class="px-3 py-2 text-sm font-semibold text-gray-900"><%= current_user.localized_full_name %></p>
           <% if current_user.staff? %>
             <%= link_to t('nav.admin_dashboard'), admin_root_path,
                   class: "block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100" %>

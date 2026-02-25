@@ -50,13 +50,13 @@
       <div class="mt-2">
         <% case @user.role %>
         <% when "admin" %>
-          <span class="inline-flex items-center rounded-full bg-purple-100 px-3 py-1 text-sm font-medium text-purple-800">Admin</span>
+          <span class="inline-flex items-center rounded-full bg-purple-100 px-3 py-1 text-sm font-medium text-purple-800"><%= @user.localized_role %></span>
         <% when "editor" %>
-          <span class="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800">Editor</span>
+          <span class="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800"><%= @user.localized_role %></span>
         <% when "author" %>
-          <span class="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800">Author</span>
+          <span class="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800"><%= @user.localized_role %></span>
         <% when "reader" %>
-          <span class="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-sm font-medium text-gray-800">Reader</span>
+          <span class="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-sm font-medium text-gray-800"><%= @user.localized_role %></span>
         <% end %>
 
         <% if @user.active? %>
