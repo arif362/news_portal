@@ -1,5 +1,5 @@
 en:
-  app_name: "News Portal"
+  app_name: "News Time"
   app_description: "Your trusted source for breaking news, in-depth analysis, and comprehensive coverage."
 
   errors:
@@ -32,7 +32,7 @@ en:
     github: "GitHub"
     linkedin: "LinkedIn"
     youtube: "YouTube"
-    copyright_html: "&copy; %{year} News Portal. All rights reserved."
+    copyright_html: "&copy; %{year} News Time. All rights reserved."
 
   home:
     title: "Home - Latest News & Breaking Stories"

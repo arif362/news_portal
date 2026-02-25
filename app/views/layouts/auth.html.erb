@@ -7,16 +7,16 @@
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 
-  <%# Google Fonts: Inter (sans) and Merriweather (serif) %>
+  <%# Google Fonts: Inter (sans), Merriweather (serif), and Tiro Bangla %>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Tiro+Bangla:ital@0;1&display=swap" rel="stylesheet">
 
   <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
   <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
   <%= javascript_importmap_tags %>
 </head>
-<body class="h-full bg-gray-100 font-sans antialiased">
+<body class="h-full bg-gray-100 font-sans antialiased <%= 'font-bangla' if I18n.locale == :bn %>">
   <div class="flex min-h-full flex-col items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
     <div class="w-full max-w-md">
       <%# Logo / Brand %>
