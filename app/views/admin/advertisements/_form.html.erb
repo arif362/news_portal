@@ -125,13 +125,6 @@
             <%= f.select :status, Advertisement.statuses.keys.map { |s| [s.titleize, s] }, {}, class: "block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary-500 focus:ring-primary-500 focus:outline-none" %>
           </div>
           <label class="flex items-center space-x-3 cursor-pointer">
-            <%= f.check_box :open_in_new_tab, class: "rounded border-gray-300 text-primary-600 focus:ring-primary-500" %>
-            <div>
-              <span class="text-sm font-medium text-gray-700">Open in New Tab</span>
-              <p class="text-xs text-gray-500">Open click-through URL in a new browser tab</p>
-            </div>
-          </label>
-          <label class="flex items-center space-x-3 cursor-pointer">
             <%= f.check_box :responsive, class: "rounded border-gray-300 text-primary-600 focus:ring-primary-500" %>
             <div>
               <span class="text-sm font-medium text-gray-700">Responsive</span>

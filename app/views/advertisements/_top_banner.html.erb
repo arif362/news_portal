@@ -7,9 +7,7 @@
 
       <%# Ad Content %>
       <% if ad.image? && ad.image.attached? %>
-        <% link_attrs = { class: "block w-full text-center" } %>
-        <% link_attrs[:target] = "_blank" if ad.open_in_new_tab? %>
-        <% link_attrs[:rel] = "noopener sponsored" if ad.open_in_new_tab? %>
+        <% link_attrs = { class: "block w-full text-center", target: "_blank", rel: "noopener noreferrer sponsored", data: { turbo: false } } %>
         <%= link_to ad_click_path(ad), **link_attrs do %>
           <%= image_tag ad.image, class: "mx-auto max-h-24 w-auto object-contain #{ad.responsive? ? 'max-w-full' : ''}", alt: ad.alt_text || ad.title %>
         <% end %>

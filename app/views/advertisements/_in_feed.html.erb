@@ -1,9 +1,7 @@
 <%# In-feed ad card that blends with article cards %>
 <div class="group relative overflow-hidden rounded-xl bg-white ring-1 ring-gray-900/5 transition hover:shadow-md">
   <% if ad.image? && ad.image.attached? %>
-    <% link_attrs = { class: "block" } %>
-    <% link_attrs[:target] = "_blank" if ad.open_in_new_tab? %>
-    <% link_attrs[:rel] = "noopener sponsored" if ad.open_in_new_tab? %>
+    <% link_attrs = { class: "block", target: "_blank", rel: "noopener noreferrer sponsored", data: { turbo: false } } %>
     <%= link_to ad_click_path(ad), **link_attrs do %>
       <div class="relative aspect-video overflow-hidden">
         <%= image_tag ad.image, class: "h-full w-full object-cover transition duration-300 group-hover:scale-105", alt: ad.alt_text || ad.title %>

@@ -62,7 +62,7 @@ module Admin
     def advertisement_params
       params.require(:advertisement).permit(
         :title_en, :title_bn, :description_en, :description_bn,
-        :ad_type, :embed_code, :target_url, :open_in_new_tab,
+        :ad_type, :embed_code, :target_url,
         :placement, :position, :status, :starts_at, :ends_at,
         :responsive, :alt_text, :image
       )

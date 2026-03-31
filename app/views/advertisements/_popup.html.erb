@@ -22,9 +22,7 @@
     <%# Content %>
     <div class="p-5">
       <% if ad.image? && ad.image.attached? %>
-        <% link_attrs = { class: "block group" } %>
-        <% link_attrs[:target] = "_blank" if ad.open_in_new_tab? %>
-        <% link_attrs[:rel] = "noopener sponsored" if ad.open_in_new_tab? %>
+        <% link_attrs = { class: "block group", target: "_blank", rel: "noopener noreferrer sponsored", data: { turbo: false } } %>
         <%= link_to ad_click_path(ad), **link_attrs do %>
           <%= image_tag ad.image, class: "w-full rounded-lg object-cover transition duration-300 group-hover:opacity-95", alt: ad.alt_text || ad.title %>
           <% if ad.title.present? %>
