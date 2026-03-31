@@ -220,7 +220,8 @@
         <% if @advertisement.target_url.present? %>
           <div>
             <dt class="text-xs font-medium text-gray-500">Target URL</dt>
-            <dd class="mt-1 text-sm text-primary-600 truncate"><%= link_to truncate(@advertisement.target_url, length: 40), @advertisement.target_url, target: "_blank", rel: "noopener" %></dd>
+            <% safe_url = @advertisement.target_url.start_with?("http://", "https://") ? @advertisement.target_url : "#" %>
+            <dd class="mt-1 text-sm text-primary-600 truncate"><%= link_to truncate(@advertisement.target_url, length: 40), safe_url, target: "_blank", rel: "noopener noreferrer" %></dd>
           </div>
         <% end %>
         <div>
