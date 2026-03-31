@@ -19,9 +19,10 @@ module NewsPortal
     # Use UTC for all timestamps (enterprise standard)
     config.time_zone = "UTC"
 
-    # Default locale and available locales
+    # Internationalization: English + Bangla
     config.i18n.default_locale = :en
-    config.i18n.available_locales = %i[en]
+    config.i18n.available_locales = %i[en bn]
+    config.i18n.fallbacks = true
 
     # Generator defaults for consistent scaffolding
     config.generators do |g|

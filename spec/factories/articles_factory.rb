@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :article do
     sequence(:title) { |n| "Article Title #{n}" }
     excerpt { Faker::Lorem.paragraph(sentence_count: 2) }
-    body { Faker::Lorem.paragraphs(number: 3).map { |p| "<p>#{p}</p>" }.join }
+    body_en { Faker::Lorem.paragraphs(number: 3).map { |p| "<p>#{p}</p>" }.join }
     status { :draft }
     comments_enabled { true }
     association :category

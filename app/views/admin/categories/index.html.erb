@@ -11,6 +11,9 @@
   <% end %>
 </div>
 
+<%# Search %>
+<%= render "admin/shared/search_bar", url: admin_categories_path, placeholder: "Search categories..." %>
+
 <%# Categories Table %>
 <div class="bg-white rounded-lg shadow-sm overflow-hidden">
   <div class="overflow-x-auto">
@@ -63,7 +66,8 @@
             </td>
           </tr>
 
-          <%# Child categories %>
+          <%# Child categories (hidden during search — results are flat) %>
+          <% unless @searching %>
           <% category.children.ordered.each do |child| %>
             <tr class="hover:bg-gray-50 bg-gray-50/50">
               <td class="px-6 py-4 whitespace-nowrap">
@@ -106,6 +110,7 @@
               </td>
             </tr>
           <% end %>
+          <% end %>
         <% end %>
 
         <% if @categories.empty? %>
@@ -114,8 +119,13 @@
               <svg class="mx-auto h-12 w-12 text-gray-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
               </svg>
-              <p class="font-medium">No categories found</p>
-              <p class="mt-1 text-gray-400">Get started by creating a new category.</p>
+              <% if params[:q].present? %>
+                <p class="font-medium">No results for "<%= params[:q] %>"</p>
+                <p class="mt-1"><%= link_to "Clear search", admin_categories_path, class: "text-primary-600 hover:text-primary-700 font-medium" %></p>
+              <% else %>
+                <p class="font-medium">No categories found</p>
+                <p class="mt-1 text-gray-400">Get started by creating a new category.</p>
+              <% end %>
             </td>
           </tr>
         <% end %>

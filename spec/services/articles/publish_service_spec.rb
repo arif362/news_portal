@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe Articles::PublishService do
   let(:editor) { create(:user, :editor) }
   let(:reader) { create(:user) }
-  let(:article) { create(:article, body: "<p>Content</p>") }
+  let(:article) { create(:article, body_en: "<p>Content</p>") }
 
   describe ".call" do
     context "with valid editor" do
@@ -25,7 +25,7 @@ RSpec.describe Articles::PublishService do
 
     context "with invalid article" do
       it "returns failure when body is blank" do
-        article.body = nil
+        article.body_en = nil
         result = described_class.call(article: article, user: editor)
         expect(result).to be_failure
       end

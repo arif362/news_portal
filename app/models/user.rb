@@ -25,6 +25,30 @@ class User < ApplicationRecord
     "#{first_name} #{last_name}"
   end
 
+  def full_name_bn
+    if first_name_bn.present? && last_name_bn.present?
+      "#{first_name_bn} #{last_name_bn}"
+    else
+      full_name
+    end
+  end
+
+  def localized_full_name
+    I18n.locale == :bn ? full_name_bn : full_name
+  end
+
+  def localized_initials
+    if I18n.locale == :bn && first_name_bn.present? && last_name_bn.present?
+      "#{first_name_bn[0]}#{last_name_bn[0]}"
+    else
+      "#{first_name[0]}#{last_name[0]}"
+    end
+  end
+
+  def localized_role
+    I18n.t("roles.#{role}")
+  end
+
   def staff?
     author? || editor? || admin?
   end

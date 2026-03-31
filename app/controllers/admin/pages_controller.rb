@@ -42,8 +42,11 @@ module Admin
     end
 
     def page_params
-      params.require(:page).permit(:title, :status, :show_in_navigation, :position,
-                                   :meta_title, :meta_description, :body)
+      params.require(:page).permit(
+        :title_en, :title_bn, :status, :show_in_navigation, :position,
+        :meta_title_en, :meta_title_bn, :meta_description_en, :meta_description_bn,
+        :body_en, :body_bn
+      )
     end
   end
 end

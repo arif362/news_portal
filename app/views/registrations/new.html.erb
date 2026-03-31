@@ -1,10 +1,10 @@
-<% content_for(:title, "Create Account") %>
+<% content_for(:title, t('auth.register.title')) %>
 
 <h2 class="text-center text-2xl font-bold tracking-tight text-gray-900">
-  Create Account
+  <%= t('auth.register.title') %>
 </h2>
 <p class="mt-2 text-center text-sm text-gray-600">
-  Join News Portal today
+  <%= t('auth.register.subtitle') %>
 </p>
 
 <% if @user.errors.any? %>
@@ -14,7 +14,7 @@
         <path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-8-5a.75.75 0 0 1 .75.75v4.5a.75.75 0 0 1-1.5 0v-4.5A.75.75 0 0 1 10 5Zm0 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clip-rule="evenodd" />
       </svg>
       <p class="text-sm font-medium text-red-800">
-        <%= pluralize(@user.errors.count, "error") %> prevented your account from being created:
+        <%= t('shared.error_count', count: @user.errors.count) %> <%= t('shared.prevented_save') %>
       </p>
     </div>
     <ul class="mt-2 ml-7 list-disc space-y-1">
@@ -28,84 +28,84 @@
 <%= form_with model: @user, url: register_path, class: "mt-8 space-y-5" do |f| %>
   <div class="grid grid-cols-2 gap-4">
     <div>
-      <%= f.label :first_name, "First name", class: "block text-sm font-medium text-gray-700" %>
+      <%= f.label :first_name, t('auth.register.first_name'), class: "block text-sm font-medium text-gray-700" %>
       <div class="mt-1">
         <%= f.text_field :first_name,
               autofocus: true,
               autocomplete: "given-name",
               required: true,
-              placeholder: "John",
+              placeholder: t('auth.register.first_name_placeholder'),
               class: "block w-full rounded-lg border border-gray-300 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 shadow-sm transition focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500" %>
       </div>
     </div>
 
     <div>
-      <%= f.label :last_name, "Last name", class: "block text-sm font-medium text-gray-700" %>
+      <%= f.label :last_name, t('auth.register.last_name'), class: "block text-sm font-medium text-gray-700" %>
       <div class="mt-1">
         <%= f.text_field :last_name,
               autocomplete: "family-name",
               required: true,
-              placeholder: "Doe",
+              placeholder: t('auth.register.last_name_placeholder'),
               class: "block w-full rounded-lg border border-gray-300 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 shadow-sm transition focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500" %>
       </div>
     </div>
   </div>
 
   <div>
-    <%= f.label :username, "Username", class: "block text-sm font-medium text-gray-700" %>
+    <%= f.label :username, t('auth.register.username'), class: "block text-sm font-medium text-gray-700" %>
     <div class="mt-1">
       <%= f.text_field :username,
             autocomplete: "username",
             required: true,
-            placeholder: "johndoe",
+            placeholder: t('auth.register.username_placeholder'),
             class: "block w-full rounded-lg border border-gray-300 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 shadow-sm transition focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500" %>
     </div>
-    <p class="mt-1 text-xs text-gray-500">Letters, numbers, and underscores only. 3-30 characters.</p>
+    <p class="mt-1 text-xs text-gray-500"><%= t('auth.register.username_hint') %></p>
   </div>
 
   <div>
-    <%= f.label :email, "Email address", class: "block text-sm font-medium text-gray-700" %>
+    <%= f.label :email, t('auth.register.email'), class: "block text-sm font-medium text-gray-700" %>
     <div class="mt-1">
       <%= f.email_field :email,
             autocomplete: "email",
             required: true,
-            placeholder: "you@example.com",
+            placeholder: t('auth.register.email_placeholder'),
             class: "block w-full rounded-lg border border-gray-300 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 shadow-sm transition focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500" %>
     </div>
   </div>
 
   <div>
-    <%= f.label :password, "Password", class: "block text-sm font-medium text-gray-700" %>
+    <%= f.label :password, t('auth.register.password'), class: "block text-sm font-medium text-gray-700" %>
     <div class="mt-1">
       <%= f.password_field :password,
             autocomplete: "new-password",
             required: true,
-            placeholder: "Min. 8 characters",
+            placeholder: t('auth.register.password_hint'),
             class: "block w-full rounded-lg border border-gray-300 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 shadow-sm transition focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500" %>
     </div>
   </div>
 
   <div>
-    <%= f.label :password_confirmation, "Confirm password", class: "block text-sm font-medium text-gray-700" %>
+    <%= f.label :password_confirmation, t('auth.register.password_confirmation'), class: "block text-sm font-medium text-gray-700" %>
     <div class="mt-1">
       <%= f.password_field :password_confirmation,
             autocomplete: "new-password",
             required: true,
-            placeholder: "Re-enter your password",
+            placeholder: t('auth.register.password_confirmation_placeholder'),
             class: "block w-full rounded-lg border border-gray-300 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 shadow-sm transition focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500" %>
     </div>
   </div>
 
   <div>
-    <%= f.submit "Create Account",
+    <%= f.submit t('auth.register.submit'),
           class: "flex w-full justify-center rounded-lg bg-primary-600 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 cursor-pointer" %>
   </div>
 <% end %>
 
 <div class="mt-6 text-center">
   <p class="text-sm text-gray-600">
-    Already have an account?
-    <%= link_to "Sign in", login_path,
+    <%= t('auth.register.have_account') %>
+    <%= link_to t('auth.register.sign_in_link'), login_path,
           class: "font-semibold text-primary-600 transition hover:text-primary-500" %>
   </p>
 </div>

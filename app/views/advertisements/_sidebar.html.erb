@@ -1,0 +1,30 @@
+<%# Sidebar ad for article pages %>
+<div class="rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5 overflow-hidden" data-controller="ad-dismiss">
+  <%# Header %>
+  <div class="flex items-center justify-between px-4 py-2 bg-gray-50 border-b border-gray-100">
+    <span class="text-[10px] font-medium uppercase tracking-wider text-gray-400">Sponsored</span>
+    <button type="button" data-action="click->ad-dismiss#close"
+      class="text-gray-400 hover:text-gray-600 transition-colors">
+      <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
+  </div>
+
+  <%# Ad Content %>
+  <div class="p-4">
+    <% if ad.image? && ad.image.attached? %>
+      <% link_attrs = { class: "block group", target: "_blank", rel: "noopener noreferrer sponsored", data: { turbo: false } } %>
+      <%= link_to ad_click_path(ad), **link_attrs do %>
+        <%= image_tag ad.image, class: "w-full rounded-lg object-cover transition duration-300 group-hover:opacity-90", alt: ad.alt_text || ad.title %>
+        <% if ad.title.present? %>
+          <p class="mt-2 text-sm font-medium text-gray-700 group-hover:text-primary-600 transition"><%= ad.title %></p>
+        <% end %>
+      <% end %>
+    <% elsif ad.html? && ad.embed_code.present? %>
+      <div class="w-full">
+        <%= raw ad.embed_code %>
+      </div>
+    <% end %>
+  </div>
+</div>

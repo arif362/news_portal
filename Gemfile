@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 8.1.2"
+gem "rails", "~> 8.1", ">= 8.1.2.1"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
 # Use postgresql as the database for Active Record
@@ -43,6 +43,12 @@ gem "pg_search"
 
 # SEO-friendly slugs [https://github.com/norman/friendly_id]
 gem "friendly_id", "~> 5.5"
+
+# Model content translation with JSONB backend [https://github.com/shioyama/mobility]
+gem "mobility", "~> 1.3"
+
+# Rails I18n default locale data (date/time formats, validations, etc.) [https://github.com/svenfuchs/rails-i18n]
+gem "rails-i18n", "~> 8.0"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]

@@ -1,11 +1,24 @@
 <%= render "admin/shared/form_errors", resource: @tag %>
 
 <%= form_with(model: [:admin, @tag], class: "space-y-6 max-w-lg") do |f| %>
-  <div class="bg-white rounded-lg shadow-sm p-6">
-    <div>
-      <%= f.label :name, class: "block text-sm font-medium text-gray-700 mb-1" %>
-      <%= f.text_field :name, class: "block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary-500 focus:ring-primary-500 focus:outline-none", placeholder: "Tag name", autofocus: true %>
-      <p class="mt-1 text-xs text-gray-500">Tag names are automatically normalized to lowercase.</p>
+  <div class="bg-white rounded-lg shadow-sm p-6" data-controller="locale-tabs">
+    <%= render "admin/shared/locale_tabs" %>
+
+    <%# English Panel %>
+    <div data-locale-tabs-target="panel" data-locale="en">
+      <div>
+        <%= f.label :name_en, "Name", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.text_field :name_en, class: "block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary-500 focus:ring-primary-500 focus:outline-none", placeholder: "Tag name", autofocus: true %>
+        <p class="mt-1 text-xs text-gray-500">Tag names are automatically normalized to lowercase.</p>
+      </div>
+    </div>
+
+    <%# Bangla Panel %>
+    <div data-locale-tabs-target="panel" data-locale="bn" hidden>
+      <div>
+        <%= f.label :name_bn, "Name (বাংলা)", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.text_field :name_bn, class: "block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary-500 focus:ring-primary-500 focus:outline-none", placeholder: "ট্যাগের নাম" %>
+      </div>
     </div>
   </div>
 

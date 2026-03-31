@@ -1,30 +1,34 @@
-<% content_for(:title, "Home - Latest News & Breaking Stories") %>
+<% content_for(:title, t('home.title')) %>
 
-<%# Breaking News Banner %>
+<%# Breaking News Ticker %>
 <% if @breaking_news.any? %>
-  <div class="bg-red-600">
+  <div class="bg-red-600" data-controller="news-ticker" data-news-ticker-speed-value="60"
+       data-action="mouseenter->news-ticker#pause mouseleave->news-ticker#resume">
     <div class="mx-auto max-w-7xl px-4 py-2.5 sm:px-6 lg:px-8">
       <div class="flex items-center gap-3">
-        <span class="inline-flex shrink-0 items-center gap-1.5 rounded bg-white px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-red-600">
+        <span class="inline-flex shrink-0 items-center gap-1.5 rounded bg-white px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-red-600 z-10">
           <span class="relative flex h-2 w-2">
             <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75"></span>
             <span class="relative inline-flex h-2 w-2 rounded-full bg-red-600"></span>
           </span>
-          Breaking
+          <%= t('home.breaking') %>
         </span>
-        <div class="flex min-w-0 items-center gap-4 overflow-x-auto">
-          <% @breaking_news.each do |article| %>
-            <%= link_to article.title, article_path(article),
-                  class: "whitespace-nowrap text-sm font-medium text-white hover:text-red-100 transition" %>
-            <% unless article == @breaking_news.last %>
+        <div class="overflow-hidden min-w-0 flex-1">
+          <div class="flex items-center gap-6 whitespace-nowrap will-change-transform" data-news-ticker-target="track">
+            <% @breaking_news.each do |article| %>
+              <%= link_to article.title, article_path(article),
+                    class: "inline-block whitespace-nowrap text-sm font-medium text-white hover:text-red-100 transition" %>
               <span class="text-red-300">&bull;</span>
             <% end %>
-          <% end %>
+          </div>
         </div>
       </div>
     </div>
   </div>
 <% end %>
+
+<%# Top Banner Ad %>
+<%= render_ad(:top_banner) %>
 
 <%# Hero / Featured Articles Section %>
 <section class="bg-white py-8 lg:py-12">
@@ -61,7 +65,7 @@
                   <%= truncate(article.title, length: 65) %>
                 </h3>
                 <p class="mt-1.5 text-xs text-gray-500">
-                  <%= time_ago_in_words(article.published_at) %> ago
+                  <%= time_ago_in_words(article.published_at) %> <%= t('shared.ago') %>
                 </p>
               </div>
             <% end %>
@@ -77,12 +81,12 @@
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="mb-8 flex items-center justify-between">
       <div>
-        <h2 class="text-2xl font-bold tracking-tight text-gray-900 lg:text-3xl">Latest News</h2>
-        <p class="mt-1 text-sm text-gray-500">Stay up to date with the most recent stories</p>
+        <h2 class="text-2xl font-bold tracking-tight text-gray-900 lg:text-3xl"><%= t('home.latest_news') %></h2>
+        <p class="mt-1 text-sm text-gray-500"><%= t('home.latest_subtitle') %></p>
       </div>
       <%= link_to articles_path,
             class: "hidden items-center gap-1 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition hover:bg-gray-50 sm:inline-flex" do %>
-        View All
+        <%= t('home.view_all') %>
         <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clip-rule="evenodd" />
         </svg>
@@ -91,8 +95,12 @@
 
     <% if @latest_articles.any? %>
       <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        <% @latest_articles.each do |article| %>
+        <% @latest_articles.each_with_index do |article, index| %>
           <%= render "shared/article_card", article: article, size: :medium %>
+          <%# In-feed ad after 3rd article %>
+          <% if index == 2 %>
+            <%= render_ad(:in_feed) %>
+          <% end %>
         <% end %>
       </div>
     <% else %>
@@ -100,14 +108,14 @@
         <svg class="mx-auto h-12 w-12 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 0 1-2.25 2.25M16.5 7.5V18a2.25 2.25 0 0 0 2.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 0 0 2.25 2.25h13.5" />
         </svg>
-        <h3 class="mt-3 text-sm font-semibold text-gray-900">No articles yet</h3>
-        <p class="mt-1 text-sm text-gray-500">Check back soon for the latest news.</p>
+        <h3 class="mt-3 text-sm font-semibold text-gray-900"><%= t('home.no_articles') %></h3>
+        <p class="mt-1 text-sm text-gray-500"><%= t('home.no_articles_hint') %></p>
       </div>
     <% end %>
 
     <%# Mobile "View All" link %>
     <div class="mt-8 text-center sm:hidden">
-      <%= link_to "View All Articles", articles_path,
+      <%= link_to t('home.view_all_articles'), articles_path,
             class: "inline-flex items-center gap-1 text-sm font-medium text-primary-600 hover:text-primary-700" %>
     </div>
   </div>
@@ -117,7 +125,7 @@
 <% if @categories.any? %>
   <section class="border-y border-gray-200 bg-white py-10">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <h2 class="mb-6 text-xl font-bold tracking-tight text-gray-900">Browse by Category</h2>
+      <h2 class="mb-6 text-xl font-bold tracking-tight text-gray-900"><%= t('home.browse_by_category') %></h2>
       <div class="flex flex-wrap gap-3">
         <% @categories.each do |category| %>
           <%= link_to category.name, category_path(category),
@@ -139,7 +147,7 @@
             <svg class="h-5 w-5 text-orange-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M12.395 2.553a1 1 0 0 0-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 0 0-.613 3.58 2.64 2.64 0 0 1-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 0 0 5.05 6.05 6.981 6.981 0 0 0 3 11a7 7 0 1 0 11.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03ZM12.12 15.12A3 3 0 0 1 7 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0 1 13 13a2.99 2.99 0 0 1-.879 2.121Z" clip-rule="evenodd" />
             </svg>
-            Most Popular
+            <%= t('home.most_popular') %>
           </span>
         </h2>
         <% if @popular_articles.any? %>
@@ -158,10 +166,10 @@
                       <span class="text-primary-600"><%= article.category.name %></span>
                       <span>&middot;</span>
                     <% end %>
-                    <span><%= number_with_delimiter(article.views_count) %> views</span>
+                    <span><%= t('shared.views', count: article.views_count) %></span>
                     <span>&middot;</span>
                     <time datetime="<%= article.published_at&.iso8601 %>">
-                      <%= time_ago_in_words(article.published_at) %> ago
+                      <%= time_ago_in_words(article.published_at) %> <%= t('shared.ago') %>
                     </time>
                   </div>
                 </div>
@@ -178,7 +186,7 @@
             <svg class="h-5 w-5 text-primary-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M5.5 3A2.5 2.5 0 0 0 3 5.5v2.879a2.5 2.5 0 0 0 .732 1.767l6.5 6.5a2.5 2.5 0 0 0 3.536 0l2.878-2.878a2.5 2.5 0 0 0 0-3.536l-6.5-6.5A2.5 2.5 0 0 0 8.38 3H5.5ZM6 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clip-rule="evenodd" />
             </svg>
-            Popular Tags
+            <%= t('home.popular_tags') %>
           </span>
         </h2>
         <% if @popular_tags.any? %>

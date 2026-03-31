@@ -11,6 +11,9 @@
   <% end %>
 </div>
 
+<%# Search %>
+<%= render "admin/shared/search_bar", url: admin_users_path, placeholder: "Search by name, email, or username..." %>
+
 <%# Users Table %>
 <div class="bg-white rounded-lg shadow-sm overflow-hidden">
   <div class="overflow-x-auto">
@@ -36,7 +39,7 @@
                     <%= image_tag user.avatar, class: "h-8 w-8 rounded-full object-cover" %>
                   <% else %>
                     <div class="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center">
-                      <span class="text-sm font-medium text-gray-500"><%= user.first_name[0] %><%= user.last_name[0] %></span>
+                      <span class="text-sm font-medium text-gray-500"><%= user.localized_initials %></span>
                     </div>
                   <% end %>
                 </div>
@@ -54,13 +57,13 @@
             <td class="px-6 py-4 whitespace-nowrap">
               <% case user.role %>
               <% when "admin" %>
-                <span class="inline-flex items-center rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-800">Admin</span>
+                <span class="inline-flex items-center rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-800"><%= user.localized_role %></span>
               <% when "editor" %>
-                <span class="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800">Editor</span>
+                <span class="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800"><%= user.localized_role %></span>
               <% when "author" %>
-                <span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">Author</span>
+                <span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800"><%= user.localized_role %></span>
               <% when "reader" %>
-                <span class="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">Reader</span>
+                <span class="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800"><%= user.localized_role %></span>
               <% end %>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
@@ -117,7 +120,12 @@
               <svg class="mx-auto h-12 w-12 text-gray-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"/>
               </svg>
-              <p class="font-medium">No users found</p>
+              <% if params[:q].present? %>
+                <p class="font-medium">No results for "<%= params[:q] %>"</p>
+                <p class="mt-1"><%= link_to "Clear search", admin_users_path(role: params[:role]), class: "text-primary-600 hover:text-primary-700 font-medium" %></p>
+              <% else %>
+                <p class="font-medium">No users found</p>
+              <% end %>
             </td>
           </tr>
         <% end %>

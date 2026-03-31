@@ -20,4 +20,20 @@
   /* Font families */
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
   --font-serif: "Merriweather", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-bangla: "Tiro Bangla", "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Bangla font - applies to all elements when body has font-bangla class */
+.font-bangla,
+.font-bangla * {
+  font-family: "Tiro Bangla", "Inter", ui-sans-serif, system-ui, sans-serif !important;
+}
+
+/* Override prose/typography plugin for Bangla */
+.font-bangla .prose,
+.font-bangla .prose *,
+.font-bangla .font-serif,
+.font-bangla .font-sans,
+.font-bangla [class*="prose-headings"] {
+  font-family: "Tiro Bangla", "Inter", ui-sans-serif, system-ui, sans-serif !important;
 }

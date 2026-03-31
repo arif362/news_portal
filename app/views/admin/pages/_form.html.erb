@@ -4,20 +4,36 @@
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
     <%# Main Content Column %>
     <div class="lg:col-span-2 space-y-6">
-      <%# Title & Body %>
-      <div class="bg-white rounded-lg shadow-sm p-6 space-y-4">
-        <div>
-          <%= f.label :title, class: "block text-sm font-medium text-gray-700 mb-1" %>
-          <%= f.text_field :title, class: "block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary-500 focus:ring-primary-500 focus:outline-none", placeholder: "Page title" %>
+      <%# Title & Body with Language Tabs %>
+      <div class="bg-white rounded-lg shadow-sm p-6" data-controller="locale-tabs">
+        <%= render "admin/shared/locale_tabs" %>
+
+        <%# English Panel %>
+        <div data-locale-tabs-target="panel" data-locale="en" class="space-y-4">
+          <div>
+            <%= f.label :title_en, "Title", class: "block text-sm font-medium text-gray-700 mb-1" %>
+            <%= f.text_field :title_en, class: "block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary-500 focus:ring-primary-500 focus:outline-none", placeholder: "Page title" %>
+          </div>
+          <div>
+            <%= f.label :body_en, "Body", class: "block text-sm font-medium text-gray-700 mb-1" %>
+            <%= f.rich_text_area :body_en, class: "min-h-[300px]" %>
+          </div>
         </div>
 
-        <div>
-          <%= f.label :body, class: "block text-sm font-medium text-gray-700 mb-1" %>
-          <%= f.rich_text_area :body, class: "min-h-[300px]" %>
+        <%# Bangla Panel %>
+        <div data-locale-tabs-target="panel" data-locale="bn" hidden class="space-y-4">
+          <div>
+            <%= f.label :title_bn, "Title (বাংলা)", class: "block text-sm font-medium text-gray-700 mb-1" %>
+            <%= f.text_field :title_bn, class: "block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary-500 focus:ring-primary-500 focus:outline-none", placeholder: "পৃষ্ঠার শিরোনাম" %>
+          </div>
+          <div>
+            <%= f.label :body_bn, "Body (বাংলা)", class: "block text-sm font-medium text-gray-700 mb-1" %>
+            <%= f.rich_text_area :body_bn, class: "min-h-[300px]" %>
+          </div>
         </div>
       </div>
 
-      <%# SEO Section %>
+      <%# SEO Section with Language Tabs %>
       <details class="bg-white rounded-lg shadow-sm">
         <summary class="px-6 py-4 cursor-pointer text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg flex items-center justify-between">
           <span>SEO Settings</span>
@@ -25,14 +41,29 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
           </svg>
         </summary>
-        <div class="px-6 pb-6 space-y-4 border-t border-gray-200 pt-4">
-          <div>
-            <%= f.label :meta_title, class: "block text-sm font-medium text-gray-700 mb-1" %>
-            <%= f.text_field :meta_title, class: "block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary-500 focus:ring-primary-500 focus:outline-none", placeholder: "Custom meta title (defaults to page title)" %>
+        <div class="px-6 pb-6 border-t border-gray-200 pt-4" data-controller="locale-tabs">
+          <%= render "admin/shared/locale_tabs" %>
+
+          <div data-locale-tabs-target="panel" data-locale="en" class="space-y-4">
+            <div>
+              <%= f.label :meta_title_en, "Meta Title", class: "block text-sm font-medium text-gray-700 mb-1" %>
+              <%= f.text_field :meta_title_en, class: "block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary-500 focus:ring-primary-500 focus:outline-none", placeholder: "Custom meta title (defaults to page title)" %>
+            </div>
+            <div>
+              <%= f.label :meta_description_en, "Meta Description", class: "block text-sm font-medium text-gray-700 mb-1" %>
+              <%= f.text_area :meta_description_en, rows: 2, class: "block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary-500 focus:ring-primary-500 focus:outline-none resize-none", placeholder: "Custom meta description" %>
+            </div>
           </div>
-          <div>
-            <%= f.label :meta_description, class: "block text-sm font-medium text-gray-700 mb-1" %>
-            <%= f.text_area :meta_description, rows: 2, class: "block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary-500 focus:ring-primary-500 focus:outline-none resize-none", placeholder: "Custom meta description" %>
+
+          <div data-locale-tabs-target="panel" data-locale="bn" hidden class="space-y-4">
+            <div>
+              <%= f.label :meta_title_bn, "Meta Title (বাংলা)", class: "block text-sm font-medium text-gray-700 mb-1" %>
+              <%= f.text_field :meta_title_bn, class: "block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary-500 focus:ring-primary-500 focus:outline-none", placeholder: "কাস্টম মেটা শিরোনাম" %>
+            </div>
+            <div>
+              <%= f.label :meta_description_bn, "Meta Description (বাংলা)", class: "block text-sm font-medium text-gray-700 mb-1" %>
+              <%= f.text_area :meta_description_bn, rows: 2, class: "block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary-500 focus:ring-primary-500 focus:outline-none resize-none", placeholder: "কাস্টম মেটা বিবরণ" %>
+            </div>
           </div>
         </div>
       </details>

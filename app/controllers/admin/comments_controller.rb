@@ -5,6 +5,11 @@ module Admin
     def index
       comments = Comment.includes(:user, :article).order(created_at: :desc)
       comments = comments.where(status: params[:status]) if params[:status].present?
+      if params[:q].present?
+        q = "%#{params[:q]}%"
+        comments = comments.joins(:user, :article)
+          .where("comments.body ILIKE :q OR users.first_name ILIKE :q OR users.last_name ILIKE :q OR articles.title->>'en' ILIKE :q", q: q)
+      end
       @pagy, @comments = pagy(comments)
     end
 

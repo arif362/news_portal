@@ -1,0 +1,53 @@
+<%# Popup/modal ad — shown once per session %>
+<div class="hidden fixed inset-0 z-50 flex items-center justify-center p-4"
+     data-controller="ad-popup"
+     data-ad-popup-id-value="<%= ad.id %>"
+     data-ad-popup-delay-value="5000">
+  <%# Backdrop %>
+  <div class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm" data-action="click->ad-popup#close"></div>
+
+  <%# Modal %>
+  <div class="relative w-full max-w-lg rounded-2xl bg-white shadow-2xl ring-1 ring-gray-900/10 overflow-hidden animate-[fadeInUp_0.3s_ease-out]">
+    <%# Header %>
+    <div class="flex items-center justify-between px-5 py-3 bg-gray-50 border-b border-gray-100">
+      <span class="text-[10px] font-medium uppercase tracking-wider text-gray-400">Sponsored</span>
+      <button type="button" data-action="click->ad-popup#close"
+        class="rounded-full p-1 text-gray-400 hover:bg-gray-200 hover:text-gray-600 transition-colors">
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <%# Content %>
+    <div class="p-5">
+      <% if ad.image? && ad.image.attached? %>
+        <% link_attrs = { class: "block group", target: "_blank", rel: "noopener noreferrer sponsored", data: { turbo: false } } %>
+        <%= link_to ad_click_path(ad), **link_attrs do %>
+          <%= image_tag ad.image, class: "w-full rounded-lg object-cover transition duration-300 group-hover:opacity-95", alt: ad.alt_text || ad.title %>
+          <% if ad.title.present? %>
+            <h3 class="mt-3 text-lg font-bold text-gray-900 group-hover:text-primary-600 transition"><%= ad.title %></h3>
+          <% end %>
+          <% if ad.description.present? %>
+            <p class="mt-1 text-sm text-gray-600"><%= ad.description %></p>
+          <% end %>
+          <div class="mt-4 inline-flex items-center rounded-lg bg-primary-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-primary-700">
+            Learn More
+            <svg class="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+            </svg>
+          </div>
+        <% end %>
+      <% elsif ad.html? && ad.embed_code.present? %>
+        <%= raw ad.embed_code %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<style>
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>

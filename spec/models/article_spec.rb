@@ -51,7 +51,7 @@ RSpec.describe Article do
 
   describe "#reading_time" do
     it "returns at least 1 minute" do
-      article = build(:article, body: "Short")
+      article = build(:article, body_en: "Short")
       expect(article.reading_time).to be >= 1
     end
   end

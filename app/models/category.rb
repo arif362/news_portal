@@ -1,4 +1,7 @@
 class Category < ApplicationRecord
+  extend Mobility
+  translates :name, :description, :meta_title, :meta_description
+
   extend FriendlyId
   friendly_id :name, use: [ :slugged, :history ]
 
@@ -7,14 +10,15 @@ class Category < ApplicationRecord
            dependent: :nullify, inverse_of: :parent
   has_many :articles, dependent: :restrict_with_error
 
-  validates :name, presence: true, uniqueness: true, length: { maximum: 100 }
+  validates :name, presence: true, length: { maximum: 100 }
   validates :slug, presence: true, uniqueness: true
+  validate :name_unique_in_locale
   validate :parent_cannot_be_self
   validate :parent_cannot_create_cycle
 
   scope :active, -> { where(active: true) }
   scope :roots, -> { where(parent_id: nil) }
-  scope :ordered, -> { order(:position, :name) }
+  scope :ordered, -> { order(:position, Arel.sql("name->>'#{I18n.locale}'")) }
   scope :with_article_counts, -> {
     left_joins(:articles)
       .where(articles: { status: :published })
@@ -24,6 +28,14 @@ class Category < ApplicationRecord
   }
 
   private
+
+  def name_unique_in_locale
+    return if name.blank?
+
+    scope = self.class.where("name->>? = ?", I18n.locale.to_s, name)
+    scope = scope.where.not(id: id) if persisted?
+    errors.add(:name, :taken) if scope.exists?
+  end
 
   def parent_cannot_be_self
     errors.add(:parent_id, "cannot be self") if parent_id.present? && parent_id == id

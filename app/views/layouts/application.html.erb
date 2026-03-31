@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full">
+<html lang="<%= I18n.locale %>" class="h-full">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
-  <title><%= content_for?(:title) ? "#{yield(:title)} | News Portal" : "News Portal" %></title>
-  <meta name="description" content="<%= content_for?(:meta_description) ? yield(:meta_description) : "Your trusted source for breaking news, in-depth analysis, and comprehensive coverage." %>">
+  <title><%= content_for?(:title) ? "#{yield(:title)} | #{t('app_name')}" : t('app_name') %></title>
+  <meta name="description" content="<%= content_for?(:meta_description) ? yield(:meta_description) : t('app_description') %>">
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 
@@ -16,16 +16,16 @@
   <link rel="icon" href="/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/icon.png">
 
-  <%# Google Fonts: Inter (sans) and Merriweather (serif) %>
+  <%# Google Fonts: Inter (sans), Merriweather (serif), and Tiro Bangla %>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Tiro+Bangla:ital@0;1&display=swap" rel="stylesheet">
 
   <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
   <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
   <%= javascript_importmap_tags %>
 </head>
-<body class="h-full bg-gray-50 font-sans antialiased text-gray-900">
+<body class="h-full bg-gray-50 font-sans antialiased text-gray-900 <%= 'font-bangla' if I18n.locale == :bn %>">
   <%= render "shared/navbar" %>
   <%= render "shared/flash_messages" %>
 
@@ -34,5 +34,8 @@
   </main>
 
   <%= render "shared/footer" %>
+
+  <%# Popup Ad (once per session) %>
+  <%= render_ad(:popup) %>
 </body>
 </html>

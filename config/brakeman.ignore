@@ -1,10 +1,18 @@
 {
   "ignored_warnings": [
     {
-      "fingerprint": "51c9b64194e51225ecafdc0a8e79c4c30cf000b20c5c8ddc612a0b269167a110",
+      "fingerprint": "7da373e7c1e3c3f3003f49b052b6510b553f1cf90c01ab1e909bf36e1dac66f6",
       "note": "Intentional: Admin-only controller (require_admin!) permits :role for user management"
+    },
+    {
+      "fingerprint": "f785ce47bec1366c5fad8f288f6ceab0058bc74716ce42faa4ed8d21e38a10e4",
+      "note": "Intentional: Ad click tracking redirects to external advertiser URLs by design; target_url is admin-controlled, not user input"
+    },
+    {
+      "fingerprint": "c6d73552942f688871fe70dd241f9e7a2f38ae0ff32f6bb5e666c688d27f5a93",
+      "note": "False positive: target_url is sanitized to '#' unless it starts with http:// or https:// before use in link_to href"
     }
   ],
-  "updated": "2026-02-24",
-  "brakeman_version": "8.0.2"
+  "updated": "2026-03-31",
+  "brakeman_version": "8.0.4"
 }

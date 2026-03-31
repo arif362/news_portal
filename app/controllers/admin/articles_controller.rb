@@ -5,6 +5,11 @@ module Admin
     def index
       articles = Article.includes(:author, :category).order(created_at: :desc)
       articles = articles.where(status: params[:status]) if params[:status].present?
+      if params[:q].present?
+        q = "%#{params[:q]}%"
+        articles = articles.joins(:author, :category)
+          .where("articles.title->>'en' ILIKE :q OR users.first_name ILIKE :q OR users.last_name ILIKE :q OR categories.name->>'en' ILIKE :q", q: q)
+      end
       @pagy, @articles = pagy(articles)
     end
 
@@ -66,9 +71,11 @@ module Admin
 
     def article_params
       params.require(:article).permit(
-        :title, :excerpt, :status, :category_id, :featured, :breaking,
-        :comments_enabled, :meta_title, :meta_description, :meta_keywords,
-        :body, :featured_image, tag_ids: []
+        :title_en, :title_bn, :excerpt_en, :excerpt_bn,
+        :status, :category_id, :featured, :breaking, :comments_enabled,
+        :meta_title_en, :meta_title_bn, :meta_description_en, :meta_description_bn,
+        :meta_keywords_en, :meta_keywords_bn,
+        :body_en, :body_bn, :featured_image, tag_ids: []
       )
     end
   end
