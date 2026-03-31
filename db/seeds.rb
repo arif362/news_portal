@@ -60,8 +60,8 @@ end
 puts "  Editor: #{editor.email}"
 
 # 3. Create authors
-bangla_first_names = ["রহিম", "করিম", "ফারহানা"]
-bangla_last_names = ["আহমেদ", "হাসান", "খান"]
+bangla_first_names = [ "রহিম", "করিম", "ফারহানা" ]
+bangla_last_names = [ "আহমেদ", "হাসান", "খান" ]
 authors = 3.times.map do |i|
   User.find_or_create_by!(email: "author#{i + 1}@newstime.com") do |u|
     u.username = "author#{i + 1}"
@@ -78,8 +78,8 @@ end
 puts "  Created #{authors.size} authors"
 
 # 4. Create reader users
-bangla_reader_first = ["মাহমুদ", "নাজমুল", "সাদিয়া", "আয়েশা", "রাহেলা"]
-bangla_reader_last = ["ইসলাম", "হক", "রহমান", "বেগম", "খাতুন"]
+bangla_reader_first = [ "মাহমুদ", "নাজমুল", "সাদিয়া", "আয়েশা", "রাহেলা" ]
+bangla_reader_last = [ "ইসলাম", "হক", "রহমান", "বেগম", "খাতুন" ]
 5.times do |i|
   User.find_or_create_by!(email: "reader#{i + 1}@newstime.com") do |u|
     u.username = "reader#{i + 1}"
@@ -221,7 +221,7 @@ end
 puts "  Created #{tags.size} tags"
 
 # 7. Create articles with realistic bilingual content and images
-staff = [admin, editor] + authors
+staff = [ admin, editor ] + authors
 tag_map = tags.index_by { |t| t.name_en }
 cat_map = all_categories.index_by { |c| c.name_en }
 
@@ -595,11 +595,11 @@ Article.published.limit(30).each do |article|
     comment = article.comments.create!(
       body: Faker::Lorem.paragraph(sentence_count: rand(1..3)),
       user: (readers + staff).sample,
-      status: [:pending, :approved, :approved, :approved].sample,
+      status: [ :pending, :approved, :approved, :approved ].sample,
       ip_address: Faker::Internet.ip_v4_address
     )
 
-    if [true, false].sample
+    if [ true, false ].sample
       article.comments.create!(
         body: Faker::Lorem.paragraph(sentence_count: rand(1..2)),
         user: staff.sample,
